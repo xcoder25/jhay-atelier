@@ -41,9 +41,17 @@
   padding: 0;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+  position: relative;
+}
+
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -54,9 +62,15 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
   selection-background-color: var(--c-gold);
   selection-color: var(--c-black);
+}
+
+#root {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
 }
 
 ::selection {
@@ -125,11 +139,19 @@ a {
   max-width: 1380px;
   margin: 0 auto;
   padding: 0 2rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
   .luxury-container {
-    padding: 0 1.25rem;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .luxury-container {
+    padding: 0 0.85rem;
   }
 }
 

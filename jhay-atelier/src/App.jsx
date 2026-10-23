@@ -68,10 +68,54 @@ function App() {
     };
   }, []);
 
-  // ── Admin auth state ────────────────────────────────────────
-  const [isOwnerAuthenticated, setIsOwnerAuthenticated] = useState(false);
-  const [isAdminView,          setIsAdminView]          = useState(false);
-  const [isAdminLoginOpen,     setIsAdminLoginOpen]     = useState(false);
+  // ── Admin auth state (session persisted) ───────────────────
+  const [isOwnerAuthenticated, setIsOwnerAuthenticated] = useState(() => {
+    return sessionStorage.getItem('jhay_admin_auth') === 'true';
+  });
+  const [isAdminView, setIsAdminView] = useState(() => {
+    return sessionStorage.getItem('jhay_admin_auth') === 'true' && window.location.hash.toLowerCase() === '#admin';
+  });
+  const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
+
+  // Hidden admin access: listens for #admin in URL and Ctrl+Shift+A shortcut
+  useEffect(() => {
+    const checkAdminRoute = () => {
+      const isHashAdmin = window.location.hash.toLowerCase() === '#admin';
+      const isSearchAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
+      if (isHashAdmin || isSearchAdmin) {
+        if (sessionStorage.getItem('jhay_admin_auth') === 'true') {
+          setIsOwnerAuthenticated(true);
+          setIsAdminView(true);
+        } else {
+          setIsAdminLoginOpen(true);
+        }
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      // Secret Admin Hotkey: Ctrl + Shift + A (or Cmd + Shift + A on macOS)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        if (sessionStorage.getItem('jhay_admin_auth') === 'true') {
+          setIsAdminView((prev) => !prev);
+          if (!isAdminView) {
+            window.location.hash = '#admin';
+          }
+        } else {
+          setIsAdminLoginOpen(true);
+        }
+      }
+    };
+
+    checkAdminRoute();
+    window.addEventListener('hashchange', checkAdminRoute);
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('hashchange', checkAdminRoute);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isAdminView]);
 
   // ── Storefront shopping state ───────────────────────────────
   const [cart,    setCart]    = useState([
@@ -232,10 +276,19 @@ function App() {
         onAddProduct={handleAddProduct}
         onUpdateProductPrice={handleUpdateProductPrice}
         onDeleteProduct={handleDeleteProduct}
-        onBackToStore={() => setIsAdminView(false)}
+        onBackToStore={() => {
+          setIsAdminView(false);
+          if (window.location.hash.toLowerCase() === '#admin') {
+            window.history.replaceState(null, '', window.location.pathname);
+          }
+        }}
         onLogout={() => {
+          sessionStorage.removeItem('jhay_admin_auth');
           setIsOwnerAuthenticated(false);
           setIsAdminView(false);
+          if (window.location.hash.toLowerCase() === '#admin') {
+            window.history.replaceState(null, '', window.location.pathname);
+          }
         }}
         currency={currency}
         onCurrencyChange={setCurrency}
@@ -345,8 +398,10 @@ function App() {
         isOpen={isAdminLoginOpen}
         onClose={() => setIsAdminLoginOpen(false)}
         onLoginSuccess={() => {
+          sessionStorage.setItem('jhay_admin_auth', 'true');
           setIsOwnerAuthenticated(true);
           setIsAdminView(true);
+          window.location.hash = '#admin';
         }}
       />
     </div>

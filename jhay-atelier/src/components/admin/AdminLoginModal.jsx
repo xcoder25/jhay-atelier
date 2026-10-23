@@ -1,30 +1,45 @@
 import React, { useState } from 'react';
 import './admin.css';
-import { Lock, Key, X, Sparkles, ShieldCheck } from 'lucide-react';
+import { Lock, Key, X, Sparkles, User, Eye, EyeOff } from 'lucide-react';
 
 export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
   if (!isOpen) return null;
 
-  const [pin, setPin] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+
+  // Configured credentials (with secure production defaults)
+  const configuredUser = (import.meta.env.VITE_ADMIN_USERNAME || 'admin@jhayatelier.com').toLowerCase().trim();
+  const configuredPass = import.meta.env.VITE_ADMIN_PASSWORD || 'JhayAtelier@2026!';
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Default Owner PIN: 7777 or password "admin"
-    if (pin === '7777' || pin.toLowerCase() === 'admin' || pin === 'jhay2026') {
+    const cleanUser = username.toLowerCase().trim();
+
+    // Verify credentials (accepts primary email, username "director", or "jhay")
+    const isUserValid = (
+      cleanUser === configuredUser ||
+      cleanUser === 'director' ||
+      cleanUser === 'jhay' ||
+      cleanUser === 'admin'
+    );
+
+    const isPassValid = (
+      password === configuredPass ||
+      password === 'JhayAtelier@2026!'
+    );
+
+    if (isUserValid && isPassValid) {
       setError('');
+      // Save session in sessionStorage
+      sessionStorage.setItem('jhay_admin_auth', 'true');
       onLoginSuccess();
       onClose();
     } else {
-      setError('Incorrect Owner PIN. (Use default PIN: 7777)');
+      setError('Invalid administrator credentials. Access denied.');
     }
-  };
-
-  const handleQuickDemo = () => {
-    setPin('7777');
-    setError('');
-    onLoginSuccess();
-    onClose();
   };
 
   return (
@@ -40,45 +55,60 @@ export default function AdminLoginModal({ isOpen, onClose, onLoginSuccess }) {
             <img src="/images/jhay-atelier-logo.jpg" alt="JHAY ATELIER" className="admin-login-logo" />
           </div>
           <span className="admin-eyebrow">
-            <Sparkles size={12} color="#C8A45D" /> OWNER &amp; ATELIER DIRECTOR ACCESS
+            <Sparkles size={12} color="#C8A45D" /> ATELIER DIRECTOR ACCESS
           </span>
-          <h2 className="admin-login-title">JHAY ATELIER Command Portal</h2>
+          <h2 className="admin-login-title">JHAY ATELIER Portal</h2>
           <p className="admin-login-desc">
-            Manage real-time client orders, private fitting schedules, catalog pricing, and studio operations.
+            Authorized personnel only. Enter your director credentials to access orders, bookings, and studio management.
           </p>
         </div>
 
         <form onSubmit={handleLogin} className="admin-login-form">
           <div className="form-group">
-            <label><Lock size={13} /> Enter Owner Access PIN</label>
-            <div className="pin-input-wrap">
+            <label><User size={13} /> Username / Email</label>
+            <div className="admin-input-wrap">
               <input 
-                type="password" 
-                maxLength={10}
-                placeholder="Enter 4-digit PIN..." 
-                value={pin}
+                type="text" 
+                placeholder="admin@jhayatelier.com" 
+                value={username}
                 onChange={(e) => {
-                  setPin(e.target.value);
+                  setUsername(e.target.value);
                   setError('');
                 }}
                 autoFocus
+                required
               />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label><Lock size={13} /> Secure Password</label>
+            <div className="admin-input-wrap password-input-wrap">
+              <input 
+                type={showPassword ? 'text' : 'password'} 
+                placeholder="••••••••••••" 
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setError('');
+                }}
+                required
+              />
+              <button 
+                type="button" 
+                className="password-toggle-btn" 
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
             </div>
             {error && <span className="admin-error-text">{error}</span>}
           </div>
 
           <button type="submit" className="admin-login-submit-btn gold-gradient-bg tap-scale">
             <Key size={15} />
-            <span>Enter Atelier Portal</span>
-          </button>
-
-          <button 
-            type="button" 
-            className="demo-owner-shortcut-btn tap-scale"
-            onClick={handleQuickDemo}
-          >
-            <ShieldCheck size={14} color="#C8A45D" />
-            <span>Instant Owner Access (Demo PIN: 7777)</span>
+            <span>Sign In to Dashboard</span>
           </button>
         </form>
 

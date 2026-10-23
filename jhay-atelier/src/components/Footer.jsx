@@ -191,7 +191,13 @@ export default function Footer({ onOpenBooking, onOpenAdminLogin }) {
         {/* Bottom Bar */}
         <div className="footer-bottom-bar">
           <div className="footer-bottom-left">
-            <span>&copy; {new Date().getFullYear()} {BRAND_INFO.name}. All Rights Reserved.</span>
+            <span 
+              className="footer-copyright"
+              onDoubleClick={onOpenAdminLogin}
+              style={{ cursor: 'default', userSelect: 'none' }}
+            >
+              &copy; {new Date().getFullYear()} {BRAND_INFO.name}. All Rights Reserved.
+            </span>
             <span className="script-font script-footer-accent">Elegance, Perfectly Tailored.</span>
           </div>
           <div className="footer-bottom-right">
@@ -203,15 +209,6 @@ export default function Footer({ onOpenBooking, onOpenAdminLogin }) {
             <a href="#">Privacy Charter</a>
             <span>&bull;</span>
             <a href="#">Terms &amp; Delivery</a>
-            <span>&bull;</span>
-            <button 
-              type="button" 
-              className="footer-owner-link tap-scale"
-              onClick={onOpenAdminLogin}
-              title="Site Owner Admin Portal"
-            >
-              Owner Portal Login
-            </button>
           </div>
         </div>
 

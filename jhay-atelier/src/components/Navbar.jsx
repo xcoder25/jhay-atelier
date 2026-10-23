@@ -247,17 +247,6 @@ export default function Navbar({
                 <Phone size={14} />
                 <span>WhatsApp / Call: {BRAND_INFO.contact.phone}</span>
               </a>
-
-              <button
-                type="button"
-                className="mobile-owner-access-btn tap-scale"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenAdminLogin();
-                }}
-              >
-                <span>Owner &amp; Atelier Director Login &rarr;</span>
-              </button>
             </div>
 
           </div>
