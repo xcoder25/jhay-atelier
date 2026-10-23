@@ -1,0 +1,150 @@
+:root {
+  --c-black: #0c0c0c;
+  --c-black-surface: #141414;
+  --c-black-elevated: #1a1a1a;
+  --c-black-card: #1f1f1f;
+  
+  --c-ivory: #F8F6F2;
+  --c-ivory-dim: #D5CFCA;
+  --c-ivory-muted: #9E9790;
+  
+  --c-gold: #C8A45D;
+  --c-gold-light: #E4C885;
+  --c-gold-dark: #9D7A32;
+  --c-gold-glow: rgba(200, 164, 93, 0.25);
+  --c-gold-soft: rgba(200, 164, 93, 0.12);
+  
+  --c-emerald: #0F4C45;
+  --c-emerald-light: #1A6B61;
+  --c-emerald-dark: #072623;
+  --c-emerald-glow: rgba(15, 76, 69, 0.4);
+  
+  --c-warm-beige: #D8C8B8;
+  --c-warm-beige-soft: rgba(216, 200, 184, 0.15);
+  
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-script: 'Italianno', cursive;
+
+  --border-gold: 1px solid rgba(200, 164, 93, 0.22);
+  --border-gold-strong: 1px solid rgba(200, 164, 93, 0.45);
+  --border-subtle: 1px solid rgba(255, 255, 255, 0.08);
+  
+  --shadow-luxury: 0 20px 50px rgba(0, 0, 0, 0.6);
+  --shadow-gold: 0 10px 30px rgba(200, 164, 93, 0.15);
+  --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--c-black);
+  color: var(--c-ivory);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  selection-background-color: var(--c-gold);
+  selection-color: var(--c-black);
+}
+
+::selection {
+  background: var(--c-gold);
+  color: var(--c-black);
+}
+
+/* Custom Luxury Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2620;
+  border-radius: 4px;
+  border: 1px solid rgba(200, 164, 93, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-gold);
+}
+
+/* Typography Utility */
+h1, h2, h3, h4, .serif-font {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.script-font {
+  font-family: var(--font-script);
+}
+
+/* Gold Gradient Shimmer */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #F3E6C8 0%, #C8A45D 50%, #A47F35 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #DFBA6E 0%, #C8A45D 50%, #A47F35 100%);
+  color: #0c0c0c;
+}
+
+/* Button & Interactive styles */
+button {
+  font-family: var(--font-sans);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  transition: var(--transition-smooth);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+
+/* Luxury Container */
+.luxury-container {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+  .luxury-container {
+    padding: 0 1.25rem;
+  }
+}
+
+/* Subtle Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-badge {
+  background: linear-gradient(90deg, rgba(200,164,93,0.1) 0%, rgba(200,164,93,0.3) 50%, rgba(200,164,93,0.1) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 6s infinite linear;
+}
