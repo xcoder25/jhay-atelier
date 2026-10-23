@@ -108,6 +108,11 @@ export async function updateProductPrice(docId, newPrice) {
   return updateDoc(ref, { priceUSD: newPrice });
 }
 
+export async function updateProduct(docId, fields) {
+  const ref = doc(productsCol, docId);
+  return updateDoc(ref, fields);
+}
+
 export async function deleteProduct(docId) {
   const ref = doc(productsCol, docId);
   return deleteDoc(ref);

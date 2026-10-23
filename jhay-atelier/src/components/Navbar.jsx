@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ShoppingBag, Heart, Calendar, Menu, X, Globe, Sparkles, ChevronRight, Phone, MapPin } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ShoppingBag, Heart, Calendar, Menu, X, Globe, Sparkles, ChevronRight, Phone, MapPin, ChevronDown } from 'lucide-react';
 import { BRAND_INFO, CURRENCIES } from '../data/atelierData';
 
 export default function Navbar({
@@ -12,9 +12,11 @@ export default function Navbar({
   onCurrencyChange,
   onOpenAdminLogin
 }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const drawerRef = useRef(null);
+  const currRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -22,9 +24,28 @@ export default function Navbar({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close drawer on outside click
+  useEffect(() => {
+    const handler = (e) => {
+      if (drawerRef.current && !drawerRef.current.contains(e.target)) {
+        setDrawerOpen(false);
+      }
+      if (currRef.current && !currRef.current.contains(e.target)) {
+        setCurrencyDropdownOpen(false);
+      }
+    };
+    if (drawerOpen || currencyDropdownOpen) {
+      document.addEventListener('mousedown', handler);
+    }
+    return () => document.removeEventListener('mousedown', handler);
+  }, [drawerOpen, currencyDropdownOpen]);
+
+  // Close drawer on route navigation
+  const closeDrawer = () => setDrawerOpen(false);
+
   return (
     <header className={`site-header${scrolled ? ' site-header--scrolled' : ''}`}>
-      {/* Top Luxury Announcement — Marquee Ticker */}
+      {/* Announcement Bar */}
       <div className="announcement-bar">
         <div className="announcement-marquee-track">
           <div className="announcement-marquee-inner">
@@ -32,7 +53,7 @@ export default function Navbar({
               <Sparkles size={11} className="sparkle-icon" /> WOMEN&apos;S COUTURE &middot; UYO
             </span>
             <span className="announcement-text">
-              Complimentary Nationwide Delivery on Orders Over &#8358;2,000,000 &bull; Uyo Flagship Atelier &bull; Video Fittings Available
+              Free Delivery on Orders Over &#8358;2,000,000 &bull; Uyo Flagship Atelier &bull; Video Fittings Available
             </span>
             <span className="announcement-sep">&#10022;</span>
             <span className="announcement-tag">
@@ -47,7 +68,7 @@ export default function Navbar({
               <Sparkles size={11} className="sparkle-icon" /> WOMEN&apos;S COUTURE &middot; UYO
             </span>
             <span className="announcement-text">
-              Complimentary Nationwide Delivery on Orders Over &#8358;2,000,000 &bull; Uyo Flagship Atelier &bull; Video Fittings Available
+              Free Delivery on Orders Over &#8358;2,000,000 &bull; Uyo Flagship Atelier &bull; Video Fittings Available
             </span>
             <span className="announcement-sep">&#10022;</span>
             <span className="announcement-tag">
@@ -60,21 +81,23 @@ export default function Navbar({
         </div>
       </div>
 
-      {/* Main Luxury Navigation Bar */}
+      {/* Main Nav Bar */}
       <nav className="main-nav">
-        <div className="luxury-container nav-container">
-          
-          {/* Left: Mobile Menu Toggle & Desktop Navigation Links */}
+        <div className="nav-container luxury-container">
+
+          {/* LEFT: Hamburger (mobile) + Desktop Links */}
           <div className="nav-left-group">
-            <button 
-              className="mobile-toggle-btn tap-scale"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle Navigation Menu"
+            {/* Hamburger — mobile only */}
+            <button
+              className="hamburger-btn tap-scale"
+              onClick={() => setDrawerOpen(true)}
+              aria-label="Open Navigation Menu"
+              aria-expanded={drawerOpen}
             >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              <Menu size={20} />
             </button>
 
-            {/* Desktop Navigation Links */}
+            {/* Desktop nav links */}
             <div className="nav-links left-links">
               <a href="#collections" className="nav-link">Dresses &amp; Outfits</a>
               <a href="#collections" className="nav-link">Evening Gowns</a>
@@ -83,12 +106,12 @@ export default function Navbar({
             </div>
           </div>
 
-          {/* Center: Official JHAY ATELIER Medallion Logo */}
+          {/* CENTER: Logo (absolutely centered) */}
           <a href="#" className="brand-logo-container tap-scale" aria-label="JHAY ATELIER Home">
             <div className="official-logo-medallion-wrap">
-              <img 
-                src="/images/jhay-atelier-logo.jpg" 
-                alt="JHAY ATELIER Official Logo" 
+              <img
+                src="/images/jhay-atelier-logo.jpg"
+                alt="JHAY ATELIER Official Logo"
                 className="official-logo-medallion"
               />
               <div className="logo-glow-ring"></div>
@@ -99,27 +122,25 @@ export default function Navbar({
             </div>
           </a>
 
-          {/* Right Action Icons & CTA */}
+          {/* RIGHT: Currency + Wishlist + Bag + CTA */}
           <div className="nav-actions">
-            
-            {/* Currency Quick Switcher */}
-            <div className="currency-selector-wrapper">
-              <button 
+            {/* Currency Switcher */}
+            <div className="currency-selector-wrapper" ref={currRef}>
+              <button
                 className="currency-trigger tap-scale"
                 onClick={() => setCurrencyDropdownOpen(!currencyDropdownOpen)}
-                title="Select Currency"
                 aria-label="Change currency"
               >
-                <Globe size={13} />
+                <Globe size={12} />
                 <span className="currency-label">{currentCurrency}</span>
+                <ChevronDown size={10} />
               </button>
-
               {currencyDropdownOpen && (
                 <div className="currency-dropdown animate-card-fade">
                   {Object.keys(CURRENCIES).map((currKey) => (
                     <button
                       key={currKey}
-                      className={`currency-option ${currentCurrency === currKey ? 'active' : ''}`}
+                      className={`currency-option${currentCurrency === currKey ? ' active' : ''}`}
                       onClick={() => {
                         onCurrencyChange(currKey);
                         setCurrencyDropdownOpen(false);
@@ -132,127 +153,125 @@ export default function Navbar({
               )}
             </div>
 
-            {/* Wishlist Button (hidden on mobile phones to prioritize bottom bar) */}
-            <button 
-              className="action-icon-btn nav-wishlist-btn tap-scale" 
+            {/* Wishlist */}
+            <button
+              className="action-icon-btn nav-wishlist-btn tap-scale"
               onClick={onOpenWishlist}
-              title="View Wishlist"
               aria-label="Wishlist"
             >
-              <Heart size={18} />
+              <Heart size={17} />
               {wishlistCount > 0 && <span className="action-badge">{wishlistCount}</span>}
             </button>
 
-            {/* Shopping Bag Button */}
-            <button 
-              className="action-icon-btn bag-btn tap-scale" 
+            {/* Shopping Bag */}
+            <button
+              className="action-icon-btn bag-btn tap-scale"
               onClick={onOpenCart}
-              title="View Shopping Bag"
               aria-label="Shopping Bag"
             >
-              <ShoppingBag size={18} />
+              <ShoppingBag size={17} />
               {cartCount > 0 && <span className="action-badge pulse">{cartCount}</span>}
             </button>
 
-            {/* Book Consultation Button (Desktop) */}
-            <button 
+            {/* Book CTA — desktop only */}
+            <button
               className="book-consultation-btn gold-gradient-bg tap-scale"
               onClick={onOpenBooking}
             >
-              <Calendar size={14} />
+              <Calendar size={13} />
               <span>Book Fitting</span>
             </button>
-
           </div>
+        </div>
+      </nav>
 
+      {/* Mobile Slide-In Drawer */}
+      {drawerOpen && (
+        <div className="drawer-backdrop" onClick={closeDrawer} aria-hidden="true" />
+      )}
+      <div
+        ref={drawerRef}
+        className={`mobile-drawer${drawerOpen ? ' mobile-drawer--open' : ''}`}
+        aria-hidden={!drawerOpen}
+      >
+        {/* Drawer Header */}
+        <div className="drawer-header">
+          <div className="drawer-brand-row">
+            <img
+              src="/images/jhay-atelier-logo.jpg"
+              alt="JHAY ATELIER"
+              className="drawer-logo-img"
+            />
+            <div className="drawer-brand-text">
+              <span className="drawer-brand-name">JHAY ATELIER</span>
+              <span className="drawer-brand-sub">TAILORED FOR HER.</span>
+              <span className="drawer-location"><MapPin size={10} /> Uyo, Akwa Ibom &bull; Nigeria</span>
+            </div>
+          </div>
+          <button className="drawer-close-btn tap-scale" onClick={closeDrawer} aria-label="Close menu">
+            <X size={20} />
+          </button>
         </div>
 
-        {/* Mobile / iPhone Fullscreen Slide-Down Menu */}
-        {mobileMenuOpen && (
-          <div className="mobile-menu-overlay animate-slide-down">
-            
-            {/* Header of Mobile Menu with Official Logo */}
-            <div className="mobile-menu-header">
-              <img 
-                src="/images/jhay-atelier-logo.jpg" 
-                alt="JHAY ATELIER" 
-                className="mobile-menu-logo"
-              />
-              <span className="mobile-menu-brand-name">JHAY ATELIER</span>
-              <span className="mobile-menu-brand-sub">TAILORED FOR HER.</span>
-              <span className="mobile-menu-location">
-                <MapPin size={11} /> Uyo, Akwa Ibom &bull; Nigeria
-              </span>
-            </div>
-
-            {/* Currency Selector Bar inside Mobile Menu */}
-            <div className="mobile-currency-bar">
-              <span className="mobile-currency-title">Currency:</span>
-              <div className="mobile-currency-pills">
-                {Object.keys(CURRENCIES).map((currKey) => (
-                  <button
-                    key={currKey}
-                    className={`mobile-curr-btn ${currentCurrency === currKey ? 'active' : ''}`}
-                    onClick={() => {
-                      onCurrencyChange(currKey);
-                    }}
-                  >
-                    {currKey}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Mobile Navigation Links */}
-            <div className="mobile-menu-links">
-              <a href="#collections" onClick={() => setMobileMenuOpen(false)}>
-                <span>All Women&apos;s Outfits</span>
-                <ChevronRight size={16} />
-              </a>
-              <a href="#collections" onClick={() => setMobileMenuOpen(false)}>
-                <span>Evening &amp; Gala Dresses</span>
-                <ChevronRight size={16} />
-              </a>
-              <a href="#atelier" onClick={() => setMobileMenuOpen(false)}>
-                <span>How Custom Tailoring Works</span>
-                <ChevronRight size={16} />
-              </a>
-              <a href="#lookbook" onClick={() => setMobileMenuOpen(false)}>
-                <span>Real Client Reviews</span>
-                <ChevronRight size={16} />
-              </a>
-              <a href="#contact" onClick={() => setMobileMenuOpen(false)}>
-                <span>Uyo Studio &amp; Contact</span>
-                <ChevronRight size={16} />
-              </a>
-            </div>
-
-            {/* Mobile CTA Box */}
-            <div className="mobile-cta-box">
-              <button 
-                className="mobile-book-btn gold-gradient-bg tap-scale"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenBooking();
-                }}
+        {/* Currency Pills */}
+        <div className="drawer-currency-row">
+          <span className="drawer-section-label">Currency</span>
+          <div className="drawer-currency-pills">
+            {Object.keys(CURRENCIES).map((currKey) => (
+              <button
+                key={currKey}
+                className={`drawer-curr-pill${currentCurrency === currKey ? ' active' : ''}`}
+                onClick={() => onCurrencyChange(currKey)}
               >
-                <Calendar size={16} />
-                <span>Book a Fitting Session</span>
+                {currKey}
               </button>
-
-              <a 
-                href={`tel:${BRAND_INFO.contact.phone}`} 
-                className="mobile-call-concierge tap-scale"
-              >
-                <Phone size={14} />
-                <span>WhatsApp / Call: {BRAND_INFO.contact.phone}</span>
-              </a>
-            </div>
-
+            ))}
           </div>
-        )}
+        </div>
 
-      </nav>
+        {/* Nav Links */}
+        <nav className="drawer-links">
+          <a href="#collections" onClick={closeDrawer} className="drawer-link">
+            <span>All Women&apos;s Outfits</span>
+            <ChevronRight size={16} />
+          </a>
+          <a href="#collections" onClick={closeDrawer} className="drawer-link">
+            <span>Evening &amp; Gala Dresses</span>
+            <ChevronRight size={16} />
+          </a>
+          <a href="#atelier" onClick={closeDrawer} className="drawer-link">
+            <span>How Custom Tailoring Works</span>
+            <ChevronRight size={16} />
+          </a>
+          <a href="#lookbook" onClick={closeDrawer} className="drawer-link">
+            <span>Real Client Reviews</span>
+            <ChevronRight size={16} />
+          </a>
+          <a href="#contact" onClick={closeDrawer} className="drawer-link">
+            <span>Uyo Studio &amp; Contact</span>
+            <ChevronRight size={16} />
+          </a>
+        </nav>
+
+        {/* CTAs */}
+        <div className="drawer-cta-section">
+          <button
+            className="drawer-book-btn gold-gradient-bg tap-scale"
+            onClick={() => { closeDrawer(); onOpenBooking(); }}
+          >
+            <Calendar size={15} />
+            <span>Book a Fitting Session</span>
+          </button>
+          <a
+            href={`tel:${BRAND_INFO.contact.phone}`}
+            className="drawer-call-btn tap-scale"
+          >
+            <Phone size={14} />
+            <span>WhatsApp / Call: {BRAND_INFO.contact.phone}</span>
+          </a>
+        </div>
+      </div>
+
     </header>
   );
 }

@@ -1139,7 +1139,31 @@
 .catalog-bottom-actions {
   margin-top: auto;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.edit-outfit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.75rem;
+  background: rgba(200, 164, 93, 0.15);
+  border: 1px solid rgba(200, 164, 93, 0.35);
+  color: var(--c-gold-light, #e5cc8a);
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edit-outfit-btn:hover {
+  background: rgba(200, 164, 93, 0.28);
+  border-color: var(--c-gold, #c8a45d);
+  color: #ffffff;
 }
 
 .delete-outfit-btn {

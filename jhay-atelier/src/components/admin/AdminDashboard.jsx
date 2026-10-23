@@ -17,6 +17,7 @@ export default function AdminDashboard({
   onUpdateBookingStatus,
   onAddProduct,
   onUpdateProductPrice,
+  onUpdateProduct,
   onDeleteProduct,
   onBackToStore,
   onLogout,
@@ -33,6 +34,7 @@ export default function AdminDashboard({
 
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddOutfitModal, setShowAddOutfitModal] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
   const [newOutfit, setNewOutfit] = useState({
     name: '',
     category: 'gowns',
@@ -107,6 +109,24 @@ export default function AdminDashboard({
       image: '/images/hero-gown.jpg',
       description: ''
     });
+  };
+
+  const handleSaveEditProduct = (e) => {
+    e.preventDefault();
+    if (!editingProduct || !editingProduct.name || !editingProduct.priceUSD) return;
+
+    if (onUpdateProduct) {
+      onUpdateProduct(editingProduct.id, {
+        name: editingProduct.name,
+        category: editingProduct.category,
+        priceUSD: Number(editingProduct.priceUSD),
+        tagline: editingProduct.tagline || '',
+        badge: editingProduct.badge || '',
+        image: editingProduct.image || '/images/hero-gown.jpg',
+        description: editingProduct.description || ''
+      });
+    }
+    setEditingProduct(null);
   };
 
   return (
@@ -555,6 +575,13 @@ export default function AdminDashboard({
 
                       <div className="catalog-bottom-actions">
                         <button 
+                          type="button"
+                          className="edit-outfit-btn tap-scale"
+                          onClick={() => setEditingProduct({ ...prod })}
+                        >
+                          <Edit3 size={14} /> Edit Outfit
+                        </button>
+                        <button 
                           className="delete-outfit-btn tap-scale"
                           onClick={() => {
                             if (window.confirm(`Delete "${prod.name}" from the store catalog?`)) {
@@ -698,6 +725,16 @@ export default function AdminDashboard({
               </div>
 
               <div className="form-group">
+                <label>Or Custom Image URL</label>
+                <input 
+                  type="text" 
+                  placeholder="https://... or /images/custom.jpg"
+                  value={newOutfit.image}
+                  onChange={(e) => setNewOutfit({ ...newOutfit, image: e.target.value })}
+                />
+              </div>
+
+              <div className="form-group">
                 <label>Outfit Description</label>
                 <textarea 
                   rows="3" 
@@ -710,6 +747,129 @@ export default function AdminDashboard({
               <button type="submit" className="gold-gradient-bg publish-outfit-btn tap-scale">
                 Publish to Storefront
               </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Edit Existing Outfit */}
+      {editingProduct && (
+        <div className="modal-backdrop" onClick={() => setEditingProduct(null)}>
+          <div className="add-outfit-dialog animate-card-fade" onClick={(e) => e.stopPropagation()}>
+            <div className="dialog-header">
+              <h3>Edit Outfit Details</h3>
+              <button onClick={() => setEditingProduct(null)}>&times;</button>
+            </div>
+
+            <form onSubmit={handleSaveEditProduct} className="add-outfit-form">
+              <div className="form-group">
+                <label>Outfit Name *</label>
+                <input 
+                  type="text" 
+                  required 
+                  value={editingProduct.name}
+                  onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                />
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Category *</label>
+                  <select 
+                    value={editingProduct.category}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
+                  >
+                    <option value="gowns">Evening &amp; Gala Dresses</option>
+                    <option value="suits">Women's Tailored Suits</option>
+                    <option value="cocktail">Cocktail &amp; Dinner Dresses</option>
+                    <option value="bridal">Bridal &amp; Wedding Guest</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>Price in USD ($) *</label>
+                  <input 
+                    type="number" 
+                    required 
+                    value={editingProduct.priceUSD}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, priceUSD: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Badge / Ribbon</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g. Best Seller, Exclusive, New Arrival"
+                    value={editingProduct.badge || ''}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, badge: e.target.value })}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Preset Photo Asset</label>
+                  <select 
+                    value={editingProduct.image}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, image: e.target.value })}
+                  >
+                    <option value="/images/hero-gown.jpg">The Champagne Silk Cape Dress</option>
+                    <option value="/images/emerald-gown.jpg">The Emerald Velvet Evening Dress</option>
+                    <option value="/images/noir-gown.jpg">The Noir Tuxedo Suit Dress</option>
+                    <option value="/images/atelier-craft.jpg">The Archival Gold-Embroidered Gown</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Image URL (or enter link to image)</label>
+                <input 
+                  type="text" 
+                  placeholder="https://... or /images/..."
+                  value={editingProduct.image || ''}
+                  onChange={(e) => setEditingProduct({ ...editingProduct, image: e.target.value })}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Short Tagline *</label>
+                <input 
+                  type="text" 
+                  value={editingProduct.tagline || ''}
+                  onChange={(e) => setEditingProduct({ ...editingProduct, tagline: e.target.value })}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Outfit Description</label>
+                <textarea 
+                  rows="3" 
+                  value={editingProduct.description || ''}
+                  onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                ></textarea>
+              </div>
+
+              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem' }}>
+                <button type="submit" className="gold-gradient-bg publish-outfit-btn tap-scale" style={{ flex: 1 }}>
+                  Save Outfit Changes
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => setEditingProduct(null)} 
+                  className="tap-scale"
+                  style={{
+                    padding: '0.75rem 1.25rem',
+                    background: 'rgba(255,255,255,0.06)',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    color: '#ccc',
+                    borderRadius: '8px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
             </form>
           </div>
         </div>

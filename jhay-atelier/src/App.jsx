@@ -25,6 +25,7 @@ import {
   updateOrderStatus,
   updateBookingStatus,
   updateProductPrice,
+  updateProduct,
   deleteProduct
 } from './firestoreService';
 import './App.css';
@@ -118,10 +119,8 @@ function App() {
   }, [isAdminView]);
 
   // ── Storefront shopping state ───────────────────────────────
-  const [cart,    setCart]    = useState([
-    { ...PRODUCTS[0], selectedColor: PRODUCTS[0].colors[0], selectedSize: PRODUCTS[0].sizes[0], quantity: 1 }
-  ]);
-  const [wishlist, setWishlist] = useState([PRODUCTS[1]]);
+  const [cart,    setCart]    = useState([]);
+  const [wishlist, setWishlist] = useState([]);
   const [activeQuickViewProduct, setActiveQuickViewProduct] = useState(null);
   const [isCartOpen,     setIsCartOpen]     = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
@@ -236,6 +235,15 @@ function App() {
     }
   };
 
+  const handleUpdateProduct = async (prodId, updatedFields) => {
+    try {
+      await updateProduct(prodId, updatedFields);
+    } catch (err) {
+      console.error("[JHAY] Product update failed:", err);
+      setProducts((prev) => prev.map((p) => (p.id === prodId ? { ...p, ...updatedFields } : p)));
+    }
+  };
+
   const handleDeleteProduct = async (prodId) => {
     try {
       await deleteProduct(prodId);
@@ -275,6 +283,7 @@ function App() {
         onUpdateBookingStatus={handleUpdateBookingStatus}
         onAddProduct={handleAddProduct}
         onUpdateProductPrice={handleUpdateProductPrice}
+        onUpdateProduct={handleUpdateProduct}
         onDeleteProduct={handleDeleteProduct}
         onBackToStore={() => {
           setIsAdminView(false);
