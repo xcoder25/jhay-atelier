@@ -4,9 +4,17 @@ import {
   TrendingUp, ShoppingBag, Calendar, Package, DollarSign, 
   Users, CheckCircle2, Clock, MapPin, Phone, Mail, 
   ArrowLeft, Plus, Trash2, Edit3, Globe, Sparkles, AlertCircle,
-  ExternalLink, Search, RefreshCw, Eye
+  ExternalLink, Search, RefreshCw, Eye, Download, Send, Check,
+  MessageSquare, Bell, Filter
 } from 'lucide-react';
 import { CURRENCIES, BRAND_INFO } from '../../data/atelierData';
+import {
+  getAdminEmail,
+  setAdminEmail,
+  sendBookingToAdmin,
+  sendTestEmailToAdmin,
+  generateMailtoLink
+} from '../../emailNotificationService';
 
 export default function AdminDashboard({
   orders,
@@ -25,9 +33,22 @@ export default function AdminDashboard({
   onCurrencyChange
 }) {
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'orders' | 'fittings' | 'catalog' | 'settings'
+
+  // Admin Notification Email configuration state
+  const [adminEmail, setAdminEmailState] = useState(() => getAdminEmail());
+  const [isEditingAdminEmail, setIsEditingAdminEmail] = useState(false);
+  const [tempAdminEmail, setTempAdminEmail] = useState(adminEmail);
+  const [emailTestStatus, setEmailTestStatus] = useState('idle'); // 'idle' | 'sending' | 'success' | 'error'
+  const [emailTestMessage, setEmailTestMessage] = useState('');
+  const [resendingBookingRef, setResendingBookingRef] = useState(null);
+
+  // Fittings filtering & search state
+  const [fittingsSearch, setFittingsSearch] = useState('');
+  const [fittingsStatusFilter, setFittingsStatusFilter] = useState('all');
+
   const [liveStreamEvents, setLiveStreamEvents] = useState([
     { id: 1, time: '2 mins ago', type: 'order', text: 'New Order placed for The Champagne Élysée One-Shoulder Dress (Size M)' },
-    { id: 2, time: '14 mins ago', type: 'fitting', text: 'Private Fitting booked by Zainab Adeleke (Lagos Studio, Victoria Island)' },
+    { id: 2, time: '14 mins ago', type: 'fitting', text: 'Private Fitting booked by Zainab Adeleke (Uyo Flagship Atelier)' },
     { id: 3, time: '45 mins ago', type: 'inquiry', text: 'WhatsApp styling inquiry received from London Mayfair client (+44 7911...)' },
     { id: 4, time: '1 hour ago', type: 'production', text: 'Master Dressmaker completed hand-beading on Emerald Royale Velvet Gown' }
   ]);
@@ -434,99 +455,318 @@ export default function AdminDashboard({
         {/* ===================================================================
             TAB 3: BESPOKE FITTINGS & VIDEO CALLS
             =================================================================== */}
-        {activeTab === 'fittings' && (
-          <div className="admin-tab-content animate-card-fade">
-            <div className="tab-header-banner">
-              <div>
-                <h2>Bespoke Appointments &amp; Fitting Schedules</h2>
-                <p>Clients who booked studio appointments or online video sizing sessions.</p>
-              </div>
-            </div>
+        {activeTab === 'fittings' && (() => {
+          // Filter bookings
+          const filteredBookings = bookings.filter((b) => {
+            const matchesStatus = fittingsStatusFilter === 'all' || (b.status || 'Confirmed').toLowerCase() === fittingsStatusFilter.toLowerCase();
+            const q = fittingsSearch.toLowerCase().trim();
+            const matchesSearch = !q ||
+              (b.name && b.name.toLowerCase().includes(q)) ||
+              (b.email && b.email.toLowerCase().includes(q)) ||
+              (b.phone && b.phone.includes(q)) ||
+              (b.bookingRef && b.bookingRef.toLowerCase().includes(q)) ||
+              (b.service && b.service.toLowerCase().includes(q)) ||
+              (b.location && b.location.toLowerCase().includes(q)) ||
+              (b.occasion && b.occasion.toLowerCase().includes(q));
+            return matchesStatus && matchesSearch;
+          });
 
-            <div className="fittings-list-container">
-              {bookings.length === 0 ? (
-                <div className="admin-empty-state">
-                  <Calendar size={48} color="#C8A45D" />
-                  <h4>No Appointments Scheduled Yet</h4>
-                  <p>When clients book a fitting on the site, their reservation details will appear here.</p>
+          const handleSaveEmail = (e) => {
+            e.preventDefault();
+            if (tempAdminEmail && tempAdminEmail.includes('@')) {
+              setAdminEmail(tempAdminEmail);
+              setAdminEmailState(tempAdminEmail.trim());
+              setIsEditingAdminEmail(false);
+            }
+          };
+
+          const handleTestNotification = async () => {
+            setEmailTestStatus('sending');
+            const res = await sendTestEmailToAdmin(adminEmail);
+            if (res.success) {
+              setEmailTestStatus('success');
+              setEmailTestMessage(`✓ Verified! Notification successfully dispatched to ${adminEmail}`);
+              setTimeout(() => setEmailTestStatus('idle'), 6000);
+            } else {
+              setEmailTestStatus('error');
+              setEmailTestMessage(`Warning: ${res.error || 'Check internet connection'}`);
+              setTimeout(() => setEmailTestStatus('idle'), 6000);
+            }
+          };
+
+          const handleResendToEmail = async (b) => {
+            setResendingBookingRef(b.bookingRef || b._id);
+            const res = await sendBookingToAdmin(b);
+            if (res.success) {
+              alert(`✓ Booking ${b.bookingRef} successfully dispatched to ${adminEmail}`);
+            } else {
+              alert(`Notice: ${res.error || 'Booking was recorded, but email server returned a warning.'}`);
+            }
+            setResendingBookingRef(null);
+          };
+
+          const handleExportCSV = () => {
+            if (bookings.length === 0) {
+              alert("No bookings to export yet.");
+              return;
+            }
+            const headers = ["Reference", "Client Name", "Phone", "Email", "Service", "Location", "Date", "Time", "Occasion", "Status", "Notes"];
+            const rows = bookings.map(b => [
+              `"${b.bookingRef || ''}"`,
+              `"${(b.name || '').replace(/"/g, '""')}"`,
+              `"${(b.phone || '').replace(/"/g, '""')}"`,
+              `"${(b.email || '').replace(/"/g, '""')}"`,
+              `"${(b.service || '').replace(/"/g, '""')}"`,
+              `"${(b.location || '').replace(/"/g, '""')}"`,
+              `"${b.date || ''}"`,
+              `"${b.time || ''}"`,
+              `"${(b.occasion || '').replace(/"/g, '""')}"`,
+              `"${b.status || 'Confirmed'}"`,
+              `"${(b.notes || '').replace(/"/g, '""')}"`
+            ]);
+            const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `JHAY_ATELIER_Fittings_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          };
+
+          return (
+            <div className="admin-tab-content animate-card-fade">
+              
+              {/* Header Banner */}
+              <div className="tab-header-banner">
+                <div>
+                  <h2>Bespoke Appointments &amp; Fitting Schedules</h2>
+                  <p>All clients who booked private fittings in Uyo, Lagos, or online video consultations.</p>
                 </div>
-              ) : (
-                <div className="fittings-grid">
-                  {bookings.map((b, idx) => (
-                    <div key={idx} className="fitting-card">
-                      
-                      <div className="fitting-header">
-                        <div className="fitting-ref-group">
-                          <span className="fitting-ref">{b.bookingRef || `JA-VIP-${idx+1}`}</span>
-                          <span className="fitting-date-badge"><Calendar size={12} /> {b.date} at {b.time}</span>
+                <div className="tab-banner-actions">
+                  <button 
+                    className="admin-secondary-btn tap-scale"
+                    onClick={handleExportCSV}
+                    title="Export appointment list as CSV"
+                  >
+                    <Download size={14} />
+                    <span>Export Schedule (CSV)</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* ── AUTOMATIC ADMIN EMAIL NOTIFICATION STATUS CALLOUT ── */}
+              <div className="admin-email-sync-card">
+                <div className="email-sync-header">
+                  <div className="email-sync-indicator">
+                    <span className="live-pulsating-dot"></span>
+                    <Mail size={16} color="#C8A45D" />
+                    <h4>Admin Booking Auto-Dispatch</h4>
+                  </div>
+                  <div className="email-sync-badge">
+                    <CheckCircle2 size={13} color="#22c55e" />
+                    <span>ACTIVE ON SITE</span>
+                  </div>
+                </div>
+
+                <div className="email-sync-body">
+                  <p className="email-sync-description">
+                    Every time a client submits a bespoke fitting reservation, full customer measurements, date, and contact details are <strong>automatically delivered to your admin email</strong> and synchronized here in real time.
+                  </p>
+
+                  <div className="email-config-row">
+                    <div className="email-current-display">
+                      <span className="label">Receiving Inbox:</span>
+                      {isEditingAdminEmail ? (
+                        <form onSubmit={handleSaveEmail} className="email-edit-inline-form">
+                          <input 
+                            type="email"
+                            required
+                            value={tempAdminEmail}
+                            onChange={(e) => setTempAdminEmail(e.target.value)}
+                            placeholder="admin@jhayatelier.com"
+                            className="email-edit-input"
+                          />
+                          <button type="submit" className="save-email-btn gold-gradient-bg tap-scale">Save</button>
+                          <button type="button" onClick={() => setIsEditingAdminEmail(false)} className="cancel-email-btn tap-scale">Cancel</button>
+                        </form>
+                      ) : (
+                        <div className="email-value-group">
+                          <strong className="email-address-text">{adminEmail}</strong>
+                          <button 
+                            className="change-email-link-btn tap-scale"
+                            onClick={() => {
+                              setTempAdminEmail(adminEmail);
+                              setIsEditingAdminEmail(true);
+                            }}
+                          >
+                            <Edit3 size={12} /> Change
+                          </button>
                         </div>
-
-                        <select 
-                          value={b.status || 'Confirmed'}
-                          onChange={(e) => onUpdateBookingStatus(idx, e.target.value)}
-                          className="fitting-status-select"
-                        >
-                          <option value="Confirmed">Confirmed</option>
-                          <option value="Measurements Taken">Measurements Taken</option>
-                          <option value="Toile Prepared">Toile Prepared</option>
-                          <option value="Completed">Completed</option>
-                          <option value="Cancelled">Cancelled</option>
-                        </select>
-                      </div>
-
-                      <div className="fitting-body">
-                        <h4 className="fitting-client-name">{b.name}</h4>
-                        <div className="fitting-meta-row">
-                          <span><MapPin size={13} /> {b.location}</span>
-                          <span><Sparkles size={13} /> {b.service}</span>
-                        </div>
-
-                        {b.occasion && (
-                          <div className="fitting-occasion-tag">
-                            <strong>Occasion:</strong> {b.occasion}
-                          </div>
-                        )}
-
-                        {b.notes && (
-                          <div className="fitting-notes-box">
-                            <strong>Client Notes:</strong> &ldquo;{b.notes}&rdquo;
-                          </div>
-                        )}
-
-                        <div className="fitting-contacts">
-                          <div><strong>Phone:</strong> {b.phone}</div>
-                          <div><strong>Email:</strong> {b.email}</div>
-                        </div>
-
-                      </div>
-
-                      {/* WhatsApp / Call action */}
-                      <div className="fitting-actions-row">
-                        <a 
-                          href={`https://wa.me/${b.phone?.replace(/[^0-9]/g, '') || '2348012345678'}?text=Hello%20${encodeURIComponent(b.name)}%2C%20this%20is%20JHAY%20ATELIER.%20We%20look%20forward%20to%20your%20fitting%20session%20on%20${b.date}%20at%20${b.time}.`}
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="whatsapp-msg-btn tap-scale"
-                        >
-                          <Phone size={13} /> WhatsApp Client
-                        </a>
-
-                        <a 
-                          href={`tel:${b.phone}`}
-                          className="call-client-btn tap-scale"
-                        >
-                          Call
-                        </a>
-                      </div>
-
+                      )}
                     </div>
+
+                    <div className="email-test-actions">
+                      <button
+                        className="test-email-dispatch-btn tap-scale"
+                        onClick={handleTestNotification}
+                        disabled={emailTestStatus === 'sending'}
+                      >
+                        <Send size={13} />
+                        <span>{emailTestStatus === 'sending' ? 'Sending Test...' : 'Send Test Notification'}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {emailTestMessage && (
+                    <div className={`email-test-toast ${emailTestStatus}`}>
+                      {emailTestMessage}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* ── SEARCH & FILTER CONTROLS ── */}
+              <div className="fittings-controls-bar">
+                <div className="fittings-search-wrap">
+                  <Search size={15} />
+                  <input 
+                    type="text"
+                    placeholder="Search by client name, phone, email, reference, or dress..."
+                    value={fittingsSearch}
+                    onChange={(e) => setFittingsSearch(e.target.value)}
+                  />
+                  {fittingsSearch && (
+                    <button className="clear-search-btn" onClick={() => setFittingsSearch('')}>&times;</button>
+                  )}
+                </div>
+
+                <div className="fittings-filter-pills">
+                  {['all', 'Confirmed', 'Measurements Taken', 'Toile Prepared', 'Completed', 'Cancelled'].map((st) => (
+                    <button
+                      key={st}
+                      className={`fittings-filter-pill${fittingsStatusFilter === st ? ' active' : ''}`}
+                      onClick={() => setFittingsStatusFilter(st)}
+                    >
+                      {st === 'all' ? `All (${bookings.length})` : st}
+                    </button>
                   ))}
                 </div>
-              )}
-            </div>
+              </div>
 
-          </div>
-        )}
+              {/* ── FITTINGS LIST GRID ── */}
+              <div className="fittings-list-container">
+                {filteredBookings.length === 0 ? (
+                  <div className="admin-empty-state">
+                    <Calendar size={48} color="#C8A45D" />
+                    <h4>No Appointments Found</h4>
+                    <p>
+                      {bookings.length === 0 
+                        ? 'When clients book a fitting on the site, their reservation details will appear here automatically.'
+                        : 'No appointments match the selected search or filter.'}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="fittings-grid">
+                    {filteredBookings.map((b, idx) => (
+                      <div key={b._id || b.bookingRef || idx} className="fitting-card">
+                        
+                        <div className="fitting-header">
+                          <div className="fitting-ref-group">
+                            <span className="fitting-ref">{b.bookingRef || `JA-VIP-${idx+1}`}</span>
+                            <span className="fitting-date-badge">
+                              <Calendar size={12} /> {b.date} at {b.time}
+                            </span>
+                          </div>
+
+                          <select 
+                            value={b.status || 'Confirmed'}
+                            onChange={(e) => onUpdateBookingStatus(idx, e.target.value)}
+                            className="fitting-status-select"
+                          >
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Measurements Taken">Measurements Taken</option>
+                            <option value="Toile Prepared">Toile Prepared</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                          </select>
+                        </div>
+
+                        <div className="fitting-body">
+                          <h4 className="fitting-client-name">{b.name}</h4>
+                          <div className="fitting-meta-row">
+                            <span><MapPin size={13} /> {b.location}</span>
+                            <span><Sparkles size={13} /> {b.service}</span>
+                          </div>
+
+                          {b.occasion && (
+                            <div className="fitting-occasion-tag">
+                              <strong>Occasion / Event:</strong> {b.occasion}
+                            </div>
+                          )}
+
+                          {b.notes && (
+                            <div className="fitting-notes-box">
+                              <strong>Client Notes / Measurements:</strong>
+                              <p>&ldquo;{b.notes}&rdquo;</p>
+                            </div>
+                          )}
+
+                          <div className="fitting-contacts">
+                            <div><strong>Phone:</strong> {b.phone}</div>
+                            <div><strong>Email:</strong> {b.email}</div>
+                          </div>
+
+                        </div>
+
+                        {/* WhatsApp / Call / Resend Email Actions */}
+                        <div className="fitting-actions-row">
+                          <a 
+                            href={`https://wa.me/${b.phone?.replace(/[^0-9]/g, '') || '2348012345678'}?text=Hello%20${encodeURIComponent(b.name)}%2C%20this%20is%20JHAY%20ATELIER.%20We%20have%20received%20your%20fitting%20reservation%20(${b.bookingRef})%20for%20${b.date}%20at%20${b.time}.`}
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="whatsapp-msg-btn tap-scale"
+                            title="Open WhatsApp chat with client"
+                          >
+                            <Phone size={13} /> WhatsApp
+                          </a>
+
+                          <a 
+                            href={`tel:${b.phone}`}
+                            className="call-client-btn tap-scale"
+                            title="Call client phone"
+                          >
+                            Call
+                          </a>
+
+                          <a
+                            href={`mailto:${b.email}?subject=Your%20JHAY%20ATELIER%20Bespoke%20Fitting%20Reservation%20(${b.bookingRef})&body=Dear%20${encodeURIComponent(b.name)}%2C%0A%0AWe%20are%20delighted%20to%20confirm%20your%20appointment%20with%20JHAY%20ATELIER%20on%20${b.date}%20at%20${b.time}%20at%20${encodeURIComponent(b.location)}.%0A%0AWarm%20regards%2C%0AJHAY%20ATELIER%20Couture`}
+                            className="email-client-btn tap-scale"
+                            title="Email client directly"
+                          >
+                            <Mail size={13} /> Email Client
+                          </a>
+
+                          <button
+                            className="resend-email-btn tap-scale"
+                            onClick={() => handleResendToEmail(b)}
+                            disabled={resendingBookingRef === (b.bookingRef || b._id)}
+                            title={`Resend full details to ${adminEmail}`}
+                          >
+                            <Send size={12} />
+                            <span>{resendingBookingRef === (b.bookingRef || b._id) ? 'Sending...' : 'Email to Admin'}</span>
+                          </button>
+                        </div>
+
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+            </div>
+          );
+        })()}
 
         {/* ===================================================================
             TAB 4: OUTFITS CATALOG & PRICING MANAGER

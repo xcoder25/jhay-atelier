@@ -1343,6 +1343,367 @@
   align-self: flex-start;
 }
 
+.tab-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(200, 164, 93, 0.35);
+  border-radius: 8px;
+  color: var(--c-gold-light, #e5cc8a);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.admin-secondary-btn:hover {
+  background: rgba(200, 164, 93, 0.15);
+  border-color: var(--c-gold, #c8a45d);
+  color: #ffffff;
+}
+
+/* ── Email Auto-Dispatch Callout Card ── */
+.admin-email-sync-card {
+  background: linear-gradient(135deg, rgba(20, 26, 24, 0.85) 0%, rgba(12, 18, 16, 0.95) 100%);
+  border: 1px solid rgba(200, 164, 93, 0.32);
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.email-sync-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.email-sync-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.email-sync-indicator h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+}
+
+.email-sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  border-radius: 20px;
+  color: #4ade80;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.email-sync-description {
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.email-sync-description strong {
+  color: var(--c-gold-light, #e5cc8a);
+}
+
+.email-config-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 0.75rem 1.1rem;
+}
+
+.email-current-display {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.email-current-display .label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.email-value-group {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.email-address-text {
+  font-size: 0.92rem;
+  color: #ffffff;
+  font-family: monospace;
+  background: rgba(200, 164, 93, 0.12);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid rgba(200, 164, 93, 0.25);
+}
+
+.change-email-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: none;
+  border: none;
+  color: var(--c-gold, #c8a45d);
+  font-size: 0.78rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.change-email-link-btn:hover {
+  color: #ffffff;
+}
+
+.email-edit-inline-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.email-edit-input {
+  background: rgba(20, 20, 20, 0.9);
+  border: 1px solid var(--c-gold, #c8a45d);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  color: #ffffff;
+  font-size: 0.85rem;
+  outline: none;
+  min-width: 220px;
+}
+
+.save-email-btn {
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  border: none;
+  color: #0c0c0c;
+  font-weight: 700;
+  font-size: 0.76rem;
+  cursor: pointer;
+}
+
+.cancel-email-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ccc;
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  cursor: pointer;
+}
+
+.email-test-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.test-email-dispatch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1rem;
+  background: rgba(200, 164, 93, 0.18);
+  border: 1px solid rgba(200, 164, 93, 0.4);
+  border-radius: 8px;
+  color: var(--c-gold-light, #e5cc8a);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.test-email-dispatch-btn:hover:not(:disabled) {
+  background: var(--c-gold, #c8a45d);
+  color: #0c0c0c;
+}
+
+.test-email-dispatch-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.email-test-toast {
+  margin-top: 0.75rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  animation: cardFade 0.3s ease;
+}
+
+.email-test-toast.success {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #86efac;
+}
+
+.email-test-toast.error {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+/* ── Fittings Controls: Search & Filter Pills ── */
+.fittings-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.fittings-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 260px;
+  background: rgba(20, 20, 20, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 0.55rem 0.85rem;
+  gap: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.fittings-search-wrap:focus-within {
+  border-color: var(--c-gold, #c8a45d);
+  box-shadow: 0 0 12px rgba(200, 164, 93, 0.2);
+}
+
+.fittings-search-wrap input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+.fittings-search-wrap .clear-search-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.fittings-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  max-width: 100%;
+  padding-bottom: 0.25rem;
+}
+
+.fittings-filter-pill {
+  padding: 0.45rem 0.85rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.fittings-filter-pill:hover {
+  background: rgba(200, 164, 93, 0.1);
+  color: var(--c-gold-light, #e5cc8a);
+}
+
+.fittings-filter-pill.active {
+  background: var(--c-gold, #c8a45d);
+  border-color: var(--c-gold, #c8a45d);
+  color: #0c0c0c;
+  font-weight: 700;
+}
+
+/* ── Fitting Card Action Buttons ── */
+.email-client-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.email-client-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.resend-email-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  background: rgba(200, 164, 93, 0.14);
+  border: 1px solid rgba(200, 164, 93, 0.35);
+  color: var(--c-gold-light, #e5cc8a);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.resend-email-btn:hover:not(:disabled) {
+  background: var(--c-gold, #c8a45d);
+  color: #0c0c0c;
+}
+
+.resend-email-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
 /* --- MOBILE SPECIFIC ENHANCEMENTS (iPhone Safe Area & Compact UX) --- */
 @media (max-width: 768px) {
   .admin-topbar-inner {

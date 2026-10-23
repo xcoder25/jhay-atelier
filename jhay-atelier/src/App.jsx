@@ -315,7 +315,6 @@ function App() {
         onOpenWishlist={() => setIsWishlistOpen(true)}
         currentCurrency={currency}
         onCurrencyChange={setCurrency}
-        onOpenAdminLogin={() => setIsAdminLoginOpen(true)}
       />
 
       <main>
