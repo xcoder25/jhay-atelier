@@ -64,14 +64,14 @@ export default function Navbar({
       <nav className="main-nav">
         <div className="luxury-container nav-container">
           
-          {/* Left: Mobile Menu Toggle & Currency Pill */}
+          {/* Left: Mobile Menu Toggle & Desktop Navigation Links */}
           <div className="nav-left-group">
             <button 
               className="mobile-toggle-btn tap-scale"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle Navigation Menu"
             >
-              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
 
             {/* Desktop Navigation Links */}
@@ -81,8 +81,28 @@ export default function Navbar({
               <a href="#atelier" className="nav-link">How It Works</a>
               <a href="#lookbook" className="nav-link">Reviews</a>
             </div>
+          </div>
 
-            {/* Mobile / Desktop Currency Quick Switcher */}
+          {/* Center: Official JHAY ATELIER Medallion Logo */}
+          <a href="#" className="brand-logo-container tap-scale" aria-label="JHAY ATELIER Home">
+            <div className="official-logo-medallion-wrap">
+              <img 
+                src="/images/jhay-atelier-logo.jpg" 
+                alt="JHAY ATELIER Official Logo" 
+                className="official-logo-medallion"
+              />
+              <div className="logo-glow-ring"></div>
+            </div>
+            <div className="brand-text-block">
+              <span className="brand-title">JHAY ATELIER</span>
+              <span className="brand-subtitle">TAILORED FOR HER.</span>
+            </div>
+          </a>
+
+          {/* Right Action Icons & CTA */}
+          <div className="nav-actions">
+            
+            {/* Currency Quick Switcher */}
             <div className="currency-selector-wrapper">
               <button 
                 className="currency-trigger tap-scale"
@@ -111,30 +131,10 @@ export default function Navbar({
                 </div>
               )}
             </div>
-          </div>
 
-          {/* Center: Official JHAY ATELIER Medallion Logo */}
-          <a href="#" className="brand-logo-container tap-scale" aria-label="JHAY ATELIER Home">
-            <div className="official-logo-medallion-wrap">
-              <img 
-                src="/images/jhay-atelier-logo.jpg" 
-                alt="JHAY ATELIER Official Logo" 
-                className="official-logo-medallion"
-              />
-              <div className="logo-glow-ring"></div>
-            </div>
-            <div className="brand-text-block">
-              <span className="brand-title">JHAY ATELIER</span>
-              <span className="brand-subtitle">TAILORED FOR HER.</span>
-            </div>
-          </a>
-
-          {/* Right Action Icons & CTA */}
-          <div className="nav-actions">
-            
-            {/* Wishlist Button */}
+            {/* Wishlist Button (hidden on mobile phones to prioritize bottom bar) */}
             <button 
-              className="action-icon-btn tap-scale" 
+              className="action-icon-btn nav-wishlist-btn tap-scale" 
               onClick={onOpenWishlist}
               title="View Wishlist"
               aria-label="Wishlist"
