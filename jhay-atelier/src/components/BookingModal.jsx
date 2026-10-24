@@ -151,7 +151,7 @@ export default function BookingModal({ isOpen, onClose, onRecordBooking }) {
               </div>
               <h2 className="booking-title">Reserve Your Private Fitting Appointment</h2>
               <p className="booking-sub">
-                Meet with our women’s design team at our Uyo flagship studio, Lagos VIP suite, or via a 15-minute high-definition video fitting.
+                Meet with our women’s design team at our Uyo flagship studio or via a 15-minute high-definition video fitting.
               </p>
             </div>
 
@@ -227,7 +227,6 @@ export default function BookingModal({ isOpen, onClose, onRecordBooking }) {
                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                   >
                     <option value="Uyo Flagship Atelier (Udo Udoma Ave, Uyo)">Uyo Flagship Atelier (Udo Udoma Ave, Uyo)</option>
-                    <option value="Lagos VIP Studio (Victoria Island, Lagos)">Lagos VIP Studio (Victoria Island, Lagos)</option>
                     <option value="Online Video Fitting & Measurement (WhatsApp / Zoom)">Online Video Fitting &amp; Measurement (WhatsApp / Zoom)</option>
                     <option value="Private VIP Hotel / Home Fitting (On Request)">Private VIP Hotel / Home Fitting (On Request)</option>
                   </select>

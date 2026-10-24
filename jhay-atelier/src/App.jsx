@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useScrollAnimations } from './hooks/useScrollAnimations';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import CollectionSection from './components/CollectionSection';
-import AtelierCraft from './components/AtelierCraft';
-import Footer from './components/Footer';
+import MobileNav from './components/MobileNav';
+import StorefrontPage from './pages/StorefrontPage';
+import StorePage from './pages/StorePage';
 import ProductModal from './components/ProductModal';
 import CartDrawer from './components/CartDrawer';
 import WishlistDrawer from './components/WishlistDrawer';
 import BookingModal from './components/BookingModal';
 import CheckoutModal from './components/CheckoutModal';
-import MobileNav from './components/MobileNav';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminLoginModal from './components/admin/AdminLoginModal';
 import { PRODUCTS } from './data/atelierData';
@@ -117,6 +115,35 @@ function App() {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isAdminView]);
+
+  // ── Page view state: 'landing' | 'store' ─────────────────────
+  const [view, setView] = useState(() => {
+    const hash = window.location.hash.toLowerCase();
+    return hash === '#store' ? 'store' : 'landing';
+  });
+
+  const goToStore = () => {
+    setView('store');
+    window.history.pushState(null, '', window.location.pathname + '#store');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const goToLanding = () => {
+    setView('landing');
+    window.history.pushState(null, '', window.location.pathname);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Listen to browser back/forward nav
+  useEffect(() => {
+    const handlePop = () => {
+      const hash = window.location.hash.toLowerCase();
+      setView(hash === '#store' ? 'store' : 'landing');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    window.addEventListener('popstate', handlePop);
+    return () => window.removeEventListener('popstate', handlePop);
+  }, []);
 
   // ── Storefront shopping state ───────────────────────────────
   const [cart,    setCart]    = useState([]);
@@ -315,30 +342,35 @@ function App() {
         onOpenWishlist={() => setIsWishlistOpen(true)}
         currentCurrency={currency}
         onCurrencyChange={setCurrency}
+        onGoToStore={goToStore}
+        onGoToLanding={goToLanding}
+        currentView={view}
       />
 
       <main>
-        <Hero
-          onOpenBooking={() => setIsBookingOpen(true)}
-          onScrollToCollections={scrollToCollections}
-        />
-
-        <CollectionSection
-          currency={currency}
-          wishlist={wishlist}
-          onToggleWishlist={handleToggleWishlist}
-          onQuickView={(prod) => setActiveQuickViewProduct(prod)}
-          onAddToCart={handleAddToCart}
-          onOpenBooking={() => setIsBookingOpen(true)}
-        />
-
-        <AtelierCraft onOpenBooking={() => setIsBookingOpen(true)} />
+        {view === 'store' ? (
+          <StorePage
+            currency={currency}
+            wishlist={wishlist}
+            onToggleWishlist={handleToggleWishlist}
+            onQuickView={(prod) => setActiveQuickViewProduct(prod)}
+            onAddToCart={handleAddToCart}
+            onOpenBooking={() => setIsBookingOpen(true)}
+          />
+        ) : (
+          <StorefrontPage
+            currency={currency}
+            wishlist={wishlist}
+            onToggleWishlist={handleToggleWishlist}
+            onQuickView={(prod) => setActiveQuickViewProduct(prod)}
+            onAddToCart={handleAddToCart}
+            onOpenBooking={() => setIsBookingOpen(true)}
+            scrollToCollections={scrollToCollections}
+            onOpenAdminLogin={() => setIsAdminLoginOpen(true)}
+            onGoToStore={goToStore}
+          />
+        )}
       </main>
-
-      <Footer
-        onOpenBooking={() => setIsBookingOpen(true)}
-        onOpenAdminLogin={() => setIsAdminLoginOpen(true)}
-      />
 
       <ProductModal
         product={activeQuickViewProduct}
@@ -398,8 +430,9 @@ function App() {
         onOpenCart={() => setIsCartOpen(true)}
         onOpenWishlist={() => setIsWishlistOpen(true)}
         onOpenBooking={() => setIsBookingOpen(true)}
-        onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        onScrollToCollections={scrollToCollections}
+        onScrollToTop={() => { goToLanding(); }}
+        onGoToStore={goToStore}
+        currentView={view}
       />
 
       <AdminLoginModal

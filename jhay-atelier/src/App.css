@@ -1105,62 +1105,7 @@
   color: var(--c-gold-light);
 }
 
-/* Palette Swatches Strip */
-.brand-palette-strip {
-  margin-bottom: 2.5rem;
-  padding: 1rem 1.25rem;
-  background: rgba(22, 22, 22, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
-  width: fit-content;
-}
 
-.palette-label {
-  display: block;
-  font-size: 0.68rem;
-  letter-spacing: 0.15em;
-  color: var(--c-gold);
-  margin-bottom: 0.65rem;
-  font-weight: 600;
-}
-
-.palette-swatches {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.palette-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.swatch-color {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: inline-block;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  transition: transform 0.25s ease;
-}
-
-.palette-item:hover .swatch-color {
-  transform: scale(1.2);
-}
-
-.swatch-name {
-  font-size: 0.62rem;
-  color: var(--c-ivory-dim);
-  font-weight: 500;
-}
-
-.swatch-hex {
-  font-size: 0.58rem;
-  color: var(--c-ivory-muted);
-}
 
 /* Hero Stats */
 .hero-stats {
@@ -3614,18 +3559,7 @@
     box-sizing: border-box;
   }
 
-  .brand-palette-strip {
-    width: 100%;
-    max-width: 100%;
-    padding: 0.75rem;
-    box-sizing: border-box;
-  }
 
-  .palette-swatches {
-    gap: 0.5rem;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
 
   .hero-stats {
     grid-template-columns: 1fr;
@@ -4474,6 +4408,440 @@ textarea:focus-visible {
     overflow-x: clip;
   }
 }
+
+
+/* ==========================================================================
+   STORE PAGE — DEDICATED ALL-PRODUCTS PAGE
+   ========================================================================== */
+
+.store-page-root {
+  min-height: 100vh;
+  background: var(--c-black);
+  padding-bottom: 6rem;
+}
+
+/* ── Store Hero Banner ────────────────────────────────────────────────────── */
+.store-hero-banner {
+  position: relative;
+  padding: 5.5rem 0 3.5rem;
+  overflow: hidden;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200, 164, 93, 0.08) 0%, transparent 70%),
+              linear-gradient(180deg, rgba(8, 8, 8, 0.95) 0%, var(--c-black) 100%);
+  border-bottom: 1px solid rgba(200, 164, 93, 0.18);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.store-hero-banner.store-hero--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.store-hero-bg-glow {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(200, 164, 93, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.store-hero-grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(200, 164, 93, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 164, 93, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse 80% 100% at 50% 0%, black 0%, transparent 80%);
+}
+
+.store-hero-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.store-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c-gold-light);
+  margin-bottom: 1.2rem;
+  padding: 0.38rem 1rem;
+  border: 1px solid rgba(200, 164, 93, 0.28);
+  border-radius: 100px;
+  background: rgba(200, 164, 93, 0.06);
+}
+
+.store-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6vw, 4.8rem);
+  font-weight: 800;
+  color: var(--c-ivory);
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  margin: 0 0 1rem;
+}
+
+.store-hero-subtitle {
+  font-size: clamp(0.9rem, 1.8vw, 1.08rem);
+  color: var(--c-ivory-dim);
+  max-width: 560px;
+  margin: 0 auto 1.8rem;
+  line-height: 1.65;
+}
+
+.store-hero-meta-pills {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.store-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: rgba(248, 246, 242, 0.65);
+  padding: 0.3rem 0.85rem;
+  border: 1px solid rgba(200, 164, 93, 0.2);
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.store-hero-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.4rem 0 0;
+  margin-top: 0.5rem;
+}
+
+.store-hero-divider span {
+  flex: 1;
+  max-width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200, 164, 93, 0.4), transparent);
+}
+
+/* ── Store Content Section ────────────────────────────────────────────────── */
+.store-content-section {
+  padding: 2.5rem 0 3rem;
+}
+
+/* ── Filter Panel ─────────────────────────────────────────────────────────── */
+.store-filter-panel {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.store-category-scroll-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 0.25rem;
+}
+
+.store-category-scroll-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.store-category-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  width: max-content;
+}
+
+.store-cat-btn {
+  position: relative;
+  padding: 0.5rem 1.1rem;
+  border-radius: 100px;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-ivory-dim);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(200, 164, 93, 0.15);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.store-cat-btn:hover {
+  color: var(--c-ivory);
+  border-color: rgba(200, 164, 93, 0.4);
+  background: rgba(200, 164, 93, 0.07);
+}
+
+.store-cat-btn.active {
+  color: #0c0c0c;
+  background: linear-gradient(135deg, var(--c-gold-light) 0%, var(--c-gold) 100%);
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(200, 164, 93, 0.35);
+  font-weight: 600;
+}
+
+.store-cat-active-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #0c0c0c;
+}
+
+/* ── Tools Row ───────────────────────────────────────────────────────────── */
+.store-tools-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.store-search-box {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(200, 164, 93, 0.18);
+  border-radius: 8px;
+  padding: 0 0.85rem;
+  gap: 0.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.store-search-box:focus-within {
+  border-color: rgba(200, 164, 93, 0.5);
+  box-shadow: 0 0 0 3px rgba(200, 164, 93, 0.1);
+}
+
+.store-right-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* ── Sort Select ──────────────────────────────────────────────────────────── */
+.store-sort-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.store-sort-select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0.5rem 2rem 0.5rem 0.85rem;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--c-ivory-dim);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(200, 164, 93, 0.18);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
+}
+
+.store-sort-select:hover,
+.store-sort-select:focus {
+  border-color: rgba(200, 164, 93, 0.4);
+  outline: none;
+}
+
+.store-sort-select option {
+  background: #111;
+  color: var(--c-ivory);
+}
+
+.sort-chevron {
+  position: absolute;
+  right: 0.6rem;
+  color: var(--c-gold-light);
+  pointer-events: none;
+}
+
+/* ── Results Bar ──────────────────────────────────────────────────────────── */
+.store-results-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0 1.2rem;
+  border-bottom: 1px solid rgba(200, 164, 93, 0.1);
+  margin-bottom: 1.8rem;
+}
+
+.store-results-label {
+  font-size: 0.8rem;
+  color: var(--c-ivory-dim);
+  letter-spacing: 0.04em;
+}
+
+.store-results-label strong {
+  color: var(--c-gold-light);
+}
+
+.store-results-label em {
+  font-style: normal;
+  color: var(--c-ivory);
+}
+
+.store-clear-filters-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: var(--c-ivory-dim);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.store-clear-filters-btn:hover {
+  color: var(--c-ivory);
+  border-color: rgba(200, 164, 93, 0.35);
+}
+
+/* ── Empty State ──────────────────────────────────────────────────────────── */
+.store-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.store-empty-state h3 {
+  font-size: 1.4rem;
+  color: var(--c-ivory);
+  font-family: var(--font-display);
+}
+
+.store-empty-state p {
+  color: var(--c-ivory-dim);
+}
+
+/* ── Bespoke strip variant for store ─────────────────────────────────────── */
+.store-bespoke-strip {
+  margin-top: 3rem;
+}
+
+/* ==========================================================================
+   NAV ACTIVE STATES & NEW NAV BUTTON STYLES
+   ========================================================================== */
+
+/* Active nav link — gold underline + bright text */
+.nav-link--active {
+  color: var(--c-gold-light) !important;
+}
+
+.nav-link--active::after {
+  width: 100% !important;
+}
+
+/* nav-link-btn: button styled like nav-link */
+.nav-link-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem 0;
+  font-family: inherit;
+}
+
+/* gold dot visible when link is NOT active (hint to click) */
+.gold-dot {
+  opacity: 1 !important;
+  background: var(--c-gold) !important;
+  animation: goldPulse 2s ease-in-out infinite;
+}
+
+@keyframes goldPulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+
+/* Drawer button links (Home, Store) */
+.drawer-link-btn {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.drawer-link--active {
+  background: rgba(200, 164, 93, 0.1) !important;
+  border-left: 2px solid var(--c-gold) !important;
+}
+
+.drawer-link--active .drawer-link-number {
+  color: var(--c-gold) !important;
+}
+
+/* Mobile responsive for store page */
+@media (max-width: 768px) {
+  .store-hero-banner {
+    padding: 4rem 0 2.5rem;
+  }
+
+  .store-hero-title {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+
+  .store-tools-row {
+    flex-wrap: wrap;
+  }
+
+  .store-search-box {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .store-right-tools {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .store-hero-meta-pills {
+    gap: 0.4rem;
+  }
+
+  .store-meta-pill {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.65rem;
+  }
+}
+
 
 
 

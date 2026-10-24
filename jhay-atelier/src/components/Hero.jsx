@@ -1,8 +1,7 @@
 import React from 'react';
 import { ArrowRight, Sparkles, Award, Scissors, ShieldCheck, MapPin } from 'lucide-react';
-import { BRAND_INFO } from '../data/atelierData';
 
-export default function Hero({ onOpenBooking, onScrollToCollections }) {
+export default function Hero({ onOpenBooking, onScrollToCollections, onGoToStore }) {
   return (
     <section className="hero-section">
       <div className="hero-background-glow"></div>
@@ -36,9 +35,10 @@ export default function Hero({ onOpenBooking, onScrollToCollections }) {
             <div className="hero-actions anim-fade-up stagger-4">
               <button 
                 className="btn-primary gold-gradient-bg tap-scale"
-                onClick={onScrollToCollections}
+                onClick={onGoToStore}
+                id="hero-shop-store-btn"
               >
-                <span>Shop Outfits</span>
+                <span>Shop the Store</span>
                 <ArrowRight size={16} />
               </button>
 
@@ -57,25 +57,7 @@ export default function Hero({ onOpenBooking, onScrollToCollections }) {
               <span>Uyo, Akwa Ibom &bull; Nigeria &bull; Worldwide Delivery</span>
             </div>
 
-            {/* Brand Palette Bar */}
-            <div className="brand-palette-strip anim-fade-up stagger-5">
-              <span className="palette-label">SIGNATURE BRAND COLORS:</span>
-              <div className="palette-swatches">
-                {BRAND_INFO.palette.map((color) => (
-                  <div key={color.name} className="palette-item" title={`${color.name} (${color.hex})`}>
-                    <span 
-                      className="swatch-color" 
-                      style={{ 
-                        backgroundColor: color.hex,
-                        border: color.name === 'Black' ? '1px solid rgba(200,164,93,0.4)' : 'none'
-                      }}
-                    ></span>
-                    <span className="swatch-name">{color.name}</span>
-                    <span className="swatch-hex">{color.hex}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+
 
             {/* Editorial Badges */}
             <div className="hero-stats anim-fade-up stagger-6">

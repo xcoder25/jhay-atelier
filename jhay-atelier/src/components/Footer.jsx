@@ -106,17 +106,6 @@ export default function Footer({ onOpenBooking, onOpenAdminLogin }) {
             <p className="footer-brand-bio">
               Where elegance is tailored to perfection. Luxury women's evening dresses, tailored suits, and custom celebration outfits — proudly crafted in <strong style={{color: 'var(--c-gold-light)'}}>Uyo, Akwa Ibom</strong>, Nigeria.
             </p>
-
-            <div className="footer-swatch-row">
-              {BRAND_INFO.palette.map((c) => (
-                <span 
-                  key={c.name} 
-                  className="footer-swatch-pill" 
-                  style={{ backgroundColor: c.hex }} 
-                  title={`${c.name} (${c.hex})`}
-                />
-              ))}
-            </div>
           </div>
 
           {/* Atelier Studios & Contact — UPDATED TO UYO */}

@@ -104,7 +104,7 @@ export const PRODUCTS = [
       "Fully lined with breathable silk for total all-night comfort",
       "Great for awards nights, gala dinners, and milestone birthdays"
     ],
-    delivery: "Handcrafted to order. Free consultation fitting available in Lagos studio or online."
+    delivery: "Handcrafted to order. Complimentary consultation fitting available at our Uyo Flagship Atelier or online."
   },
   {
     id: "ja-03",
@@ -221,7 +221,7 @@ export const ATELIER_PILLARS = [
   {
     step: "02",
     title: "Send Your Measurements",
-    desc: "Pick your standard dress size (XS to XL) or enter your bust, waist, and hips. You can also visit our Victoria Island studio or hop on a 15-minute video call."
+    desc: "Pick your standard dress size (XS to XL) or enter your bust, waist, and hips. You can also visit our Udo Udoma Avenue atelier studio in Uyo or hop on a 15-minute video call."
   },
   {
     step: "03",

@@ -26,7 +26,7 @@ export default function CheckoutModal({
     phone: '',
     address: '',
     city: '',
-    country: 'United Kingdom',
+    country: 'Nigeria',
     paymentMethod: 'card',
     cardNumber: '•••• •••• •••• 4242',
     expiry: '12/28',
@@ -189,7 +189,7 @@ export default function CheckoutModal({
                     <input 
                       type="text" 
                       required 
-                      placeholder="London / Lagos" 
+                      placeholder="Uyo / Abuja / Lagos / London" 
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     />
@@ -200,12 +200,12 @@ export default function CheckoutModal({
                       value={formData.country}
                       onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                     >
-                      <option value="United Kingdom">United Kingdom</option>
                       <option value="Nigeria">Nigeria</option>
+                      <option value="United Kingdom">United Kingdom</option>
                       <option value="United States">United States</option>
+                      <option value="Canada">Canada</option>
                       <option value="United Arab Emirates">United Arab Emirates</option>
                       <option value="France">France</option>
-                      <option value="Canada">Canada</option>
                     </select>
                   </div>
                 </div>

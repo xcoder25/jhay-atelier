@@ -8,7 +8,8 @@ export default function MobileNav({
   onOpenWishlist,
   onOpenBooking,
   onScrollToTop,
-  onScrollToCollections
+  onGoToStore,
+  currentView
 }) {
   const [activeTab, setActiveTab] = useState('home');
   const [isVisible, setIsVisible] = useState(true);
@@ -73,20 +74,21 @@ export default function MobileNav({
           <span>Atelier</span>
         </button>
 
-        {/* Creations / Collections */}
+        {/* Store Tab */}
         <button 
-          className={`mobile-bottom-item${activeTab === 'collections' ? ' active' : ''}`}
-          onClick={(e) => handleTabClick('collections', onScrollToCollections, e)}
-          aria-label="Creations"
+          className={`mobile-bottom-item${activeTab === 'store' || currentView === 'store' ? ' active' : ''}`}
+          onClick={(e) => handleTabClick('store', onGoToStore, e)}
+          aria-label="Shop the Store"
+          id="mobile-nav-store"
         >
-          {ripple?.id === 'collections' && (
+          {ripple?.id === 'store' && (
             <span className="nav-ripple" style={{ left: ripple.x, top: ripple.y }} key={ripple.key} />
           )}
           <div className="icon-wrapper">
             <Sparkles size={19} />
-            {activeTab === 'collections' && <span className="active-dot" />}
+            {(activeTab === 'store' || currentView === 'store') && <span className="active-dot" />}
           </div>
-          <span>Creations</span>
+          <span>Store</span>
         </button>
 
         {/* Center Bespoke Booking CTA */}

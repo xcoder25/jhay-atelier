@@ -22,7 +22,10 @@ export default function Navbar({
   onOpenBooking,
   onOpenWishlist,
   currentCurrency,
-  onCurrencyChange
+  onCurrencyChange,
+  onGoToStore,
+  onGoToLanding,
+  currentView
 }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
@@ -107,26 +110,40 @@ export default function Navbar({
             </button>
 
             <div className="nav-links left-links">
-              <a href="#collections" className="nav-link">
+              <a
+                href="#"
+                className={`nav-link${currentView === 'landing' ? ' nav-link--active' : ''}`}
+                onClick={(e) => { e.preventDefault(); onGoToLanding(); }}
+              >
+                <span>Home</span>
+              </a>
+              <button
+                className={`nav-link nav-link-btn${currentView === 'store' ? ' nav-link--active' : ''}`}
+                onClick={onGoToStore}
+                id="nav-store-link"
+              >
+                <span>Store</span>
+                {currentView !== 'store' && <span className="nav-link-dot gold-dot" />}
+              </button>
+              <a href={currentView === 'landing' ? '#collections' : '#'} className="nav-link" onClick={(e) => { if (currentView !== 'landing') { e.preventDefault(); onGoToLanding(); setTimeout(() => { const el = document.getElementById('collections'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 300); } }}>
                 <span>Collections</span>
               </a>
-              <a href="#collections" className="nav-link">
-                <span>Evening Gala</span>
-              </a>
-              <a href="#atelier" className="nav-link">
+              <a href={currentView === 'landing' ? '#atelier' : '#'} className="nav-link" onClick={(e) => { if (currentView !== 'landing') { e.preventDefault(); onGoToLanding(); setTimeout(() => { const el = document.getElementById('atelier'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 300); } }}>
                 <span>The Craft</span>
               </a>
-              <a href="#lookbook" className="nav-link">
+              <a href={currentView === 'landing' ? '#lookbook' : '#'} className="nav-link" onClick={(e) => { if (currentView !== 'landing') { e.preventDefault(); onGoToLanding(); setTimeout(() => { const el = document.getElementById('lookbook'); if(el) el.scrollIntoView({behavior:'smooth'}); }, 300); } }}>
                 <span>Reviews</span>
-              </a>
-              <a href="#contact" className="nav-link">
-                <span>Uyo Studio</span>
               </a>
             </div>
           </div>
 
           {/* CENTER: Grand Official Emblem Logo */}
-          <a href="#" className="brand-logo-container tap-scale" aria-label="JHAY ATELIER Home">
+          <a
+            href="#"
+            className="brand-logo-container tap-scale"
+            aria-label="JHAY ATELIER Home"
+            onClick={(e) => { e.preventDefault(); onGoToLanding(); }}
+          >
             <div className="official-logo-medallion-wrap">
               <img
                 src="/images/jhay-atelier-logo.jpg"
@@ -270,23 +287,31 @@ export default function Navbar({
 
         {/* Navigation Links */}
         <nav className="drawer-links" aria-label="Mobile Drawer Navigation">
-          <a href="#collections" onClick={closeDrawer} className="drawer-link">
+          <button
+            className={`drawer-link drawer-link-btn ${currentView === 'landing' ? 'drawer-link--active' : ''}`}
+            onClick={() => { closeDrawer(); onGoToLanding(); }}
+            id="drawer-home-link"
+          >
             <div className="drawer-link-left">
               <span className="drawer-link-number">01</span>
-              <span>All Outfits &amp; Dresses</span>
+              <span>Home</span>
             </div>
             <ChevronRight size={16} />
-          </a>
+          </button>
 
-          <a href="#collections" onClick={closeDrawer} className="drawer-link">
+          <button
+            className={`drawer-link drawer-link-btn ${currentView === 'store' ? 'drawer-link--active' : ''}`}
+            onClick={() => { closeDrawer(); onGoToStore(); }}
+            id="drawer-store-link"
+          >
             <div className="drawer-link-left">
               <span className="drawer-link-number">02</span>
-              <span>Evening &amp; Gala Couture</span>
+              <span>Store — All Dresses &amp; Outfits</span>
             </div>
             <ChevronRight size={16} />
-          </a>
+          </button>
 
-          <a href="#atelier" onClick={closeDrawer} className="drawer-link">
+          <a href={currentView === 'landing' ? '#atelier' : '#'} onClick={(e) => { closeDrawer(); if(currentView !== 'landing'){e.preventDefault(); onGoToLanding(); setTimeout(()=>{const el=document.getElementById('atelier');if(el)el.scrollIntoView({behavior:'smooth'});},300); } }} className="drawer-link">
             <div className="drawer-link-left">
               <span className="drawer-link-number">03</span>
               <span>How Custom Tailoring Works</span>
@@ -294,7 +319,7 @@ export default function Navbar({
             <ChevronRight size={16} />
           </a>
 
-          <a href="#lookbook" onClick={closeDrawer} className="drawer-link">
+          <a href={currentView === 'landing' ? '#lookbook' : '#'} onClick={(e) => { closeDrawer(); if(currentView !== 'landing'){e.preventDefault(); onGoToLanding(); setTimeout(()=>{const el=document.getElementById('lookbook');if(el)el.scrollIntoView({behavior:'smooth'});},300); } }} className="drawer-link">
             <div className="drawer-link-left">
               <span className="drawer-link-number">04</span>
               <span>Client Reviews &amp; Lookbook</span>
@@ -302,7 +327,7 @@ export default function Navbar({
             <ChevronRight size={16} />
           </a>
 
-          <a href="#contact" onClick={closeDrawer} className="drawer-link">
+          <a href={currentView === 'landing' ? '#contact-studio' : '#'} onClick={(e) => { closeDrawer(); if(currentView !== 'landing'){e.preventDefault(); onGoToLanding(); setTimeout(()=>{const el=document.getElementById('contact-studio');if(el)el.scrollIntoView({behavior:'smooth'});},300); } }} className="drawer-link">
             <div className="drawer-link-left">
               <span className="drawer-link-number">05</span>
               <span>Uyo Studio Location &amp; Hours</span>

@@ -115,7 +115,7 @@ export default function AdminDashboard({
       sizes: ["UK 8 / US 4 (S)", "UK 10 / US 6 (M)", "UK 12 / US 8 (L)", "Custom Size (Tailored to your body)"],
       features: [
         "100% Noble European Silk Satin",
-        "Hand-stitched in our Victoria Island Studio",
+        "Hand-stitched at our Uyo Flagship Atelier",
         "Free bespoke fit guarantee"
       ]
     });
@@ -412,7 +412,7 @@ export default function AdminDashboard({
                           <p><strong>Customer:</strong> {ord.customerName || 'Lady Vivienne'}</p>
                           <p><strong>Email:</strong> {ord.email || 'client@vip.com'}</p>
                           <p><strong>Phone:</strong> {ord.phone || '+234 801 234 5678'}</p>
-                          <p><strong>Address:</strong> {ord.address || 'Victoria Island, Lagos'}</p>
+                          <p><strong>Address:</strong> {ord.address || 'Udo Udoma Ave, Uyo, Akwa Ibom'}</p>
                         </div>
 
                         <div className="admin-order-items">
@@ -866,18 +866,18 @@ export default function AdminDashboard({
                   <input type="email" defaultValue={BRAND_INFO.contact.email} />
                 </div>
                 <div className="form-group">
-                  <label>Lagos Studio Address</label>
+                  <label>Uyo Flagship Studio Address</label>
                   <input type="text" defaultValue={BRAND_INFO.contact.address} />
                 </div>
               </div>
 
               <div className="settings-panel">
-                <h3>Storefront Announcement Bar</h3>
+                <h3>Storefront Announcement &amp; Micro-Bar</h3>
                 <div className="form-group">
-                  <label>Top Announcement Message</label>
+                  <label>Top Editorial Message</label>
                   <input 
                     type="text" 
-                    defaultValue="Complimentary Worldwide Shipping on Orders Over $1,500 • Lagos Studio & Video Fittings" 
+                    defaultValue="Uyo Flagship Atelier • Udo Udoma Avenue • Bespoke Haute Couture For Her" 
                   />
                 </div>
                 <p className="settings-tip">
