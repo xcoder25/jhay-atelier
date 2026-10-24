@@ -8,12 +8,12 @@ export const BRAND_INFO = {
     "WHERE ELEGANCE IS TAILORED TO PERFECTION."
   ],
   contact: {
-    phone: "+234 801 234 5678",
-    email: "hello@jhayatelier.com",
-    concierge: "concierge@jhayatelier.com",
+    phone: "09063463598",
+    email: "Jhayatelier@gmail.com",
+    concierge: "Jhayatelier@gmail.com",
     address: "Atelier Studio, Udo Udoma Avenue, Uyo, Akwa Ibom State, Nigeria",
     city: "Uyo, Akwa Ibom",
-    hours: "Monday – Saturday: 10:00 AM – 7:00 PM (By Appointment & Online)"
+    hours: "Mon – Sat: 10:00 AM – 7:00 PM · Mobile Fitting Available"
   },
   social: {
     instagram: "@jhay.atelier",

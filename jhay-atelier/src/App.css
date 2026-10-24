@@ -3073,21 +3073,30 @@
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
-  gap: 3rem;
+  grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+  gap: 2.5rem 3rem;
   margin-bottom: 3.5rem;
+  align-items: start;
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1024px) {
   .footer-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 2rem;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .footer-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 1rem;
   }
 }
 
@@ -3131,7 +3140,6 @@
   color: var(--c-ivory-dim);
   line-height: 1.6;
   margin-bottom: 1.25rem;
-  max-width: 340px;
 }
 
 .footer-swatch-row {
@@ -3203,12 +3211,23 @@
   margin-bottom: 1.25rem;
 }
 
+.footer-social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
 .footer-social-links .social-link {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.8rem;
   color: var(--c-gold-light);
+  transition: color 0.2s ease;
+}
+
+.footer-social-links .social-link:hover {
+  color: var(--c-gold);
 }
 
 .footer-bottom-bar {
@@ -3220,7 +3239,7 @@
   font-size: 0.75rem;
   color: var(--c-ivory-muted);
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 .footer-bottom-left {
@@ -3647,8 +3666,8 @@
   }
 
   .footer-grid {
-    grid-template-columns: 1fr !important;
-    gap: 2rem !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1.5rem 1rem !important;
   }
 
   /* Native Mobile Bottom-Sheet for Modals and Drawers */
@@ -5101,3 +5120,297 @@ textarea:focus-visible {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+
+
+/* ==========================================================================
+   MOBILE FITTING BADGE — Studio Section
+   ========================================================================== */
+
+.studio-mobile-fitting-badge {
+  background: linear-gradient(135deg, rgba(200,164,93,0.12) 0%, rgba(200,164,93,0.04) 100%);
+  border: 1px solid rgba(200,164,93,0.35);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  margin-top: 0.25rem;
+  gap: 0.9rem !important;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.studio-mobile-fitting-badge:hover {
+  background: linear-gradient(135deg, rgba(200,164,93,0.2) 0%, rgba(200,164,93,0.08) 100%);
+  border-color: rgba(200,164,93,0.6);
+}
+
+.mobile-fitting-icon {
+  font-size: 1.3rem;
+  min-width: 28px;
+  text-align: center;
+  line-height: 1;
+  filter: drop-shadow(0 0 6px rgba(200,164,93,0.5));
+}
+
+.studio-mobile-fitting-badge strong {
+  color: var(--gold-primary, #C8A45D);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.studio-mobile-fitting-badge span:last-child {
+  color: var(--text-muted, #a8a8a8);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   FEATURED PICKS — 3-column layout on desktop
+   ========================================================================== */
+
+.featured-grid {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+@media (max-width: 900px) {
+  .featured-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 580px) {
+  .featured-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* ==========================================================================
+   DISTINGUISHED PATRONS TESTIMONIALS
+   ========================================================================== */
+
+.patrons-section {
+  padding: 6rem 0 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.patrons-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(200,164,93,0.4), transparent);
+}
+
+.patrons-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+/* ── Desktop: 3-column grid ── */
+.patrons-scroll-track {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* ── Patron card ── */
+.patron-card {
+  position: relative;
+  background: linear-gradient(145deg, rgba(28,28,28,0.95) 0%, rgba(20,20,20,0.98) 100%);
+  border: 1px solid rgba(200,164,93,0.18);
+  border-radius: 14px;
+  padding: 2rem 1.75rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.patron-card:hover {
+  border-color: rgba(200,164,93,0.45);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(200,164,93,0.1);
+}
+
+/* Decorative large open-quote */
+.patron-open-quote {
+  position: absolute;
+  top: -0.5rem;
+  right: 1.25rem;
+  font-family: Georgia, serif;
+  font-size: 7rem;
+  line-height: 1;
+  color: rgba(200,164,93,0.08);
+  pointer-events: none;
+  user-select: none;
+  font-style: normal;
+}
+
+/* Stars */
+.patron-stars {
+  display: flex;
+  gap: 3px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Quote */
+.patron-quote {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--c-ivory, #f4f0ea);
+  line-height: 1.7;
+  flex-grow: 1;
+  position: relative;
+  z-index: 1;
+}
+
+/* Author row */
+.patron-author-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  z-index: 1;
+  flex-wrap: wrap;
+}
+
+/* Avatar circle with initial */
+.patron-avatar {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #C8A45D 0%, #a07830 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+  flex-shrink: 0;
+}
+
+.patron-author-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.patron-author-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--c-gold-light, #d4af6a);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.patron-author-sub {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  color: var(--c-ivory-muted, #777);
+}
+
+/* Event badge */
+.patron-event-badge {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #C8A45D;
+  background: rgba(200,164,93,0.1);
+  border: 1px solid rgba(200,164,93,0.25);
+  border-radius: 20px;
+  padding: 0.25rem 0.65rem;
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+/* ── Scroll hint dots (visible only on mobile) ── */
+.patrons-scroll-hint {
+  display: none;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 1.5rem;
+}
+
+.scroll-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(200,164,93,0.3);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.scroll-dot--active {
+  background: #C8A45D;
+  transform: scale(1.3);
+}
+
+/* ── Tablet: 2-col grid ── */
+@media (max-width: 900px) {
+  .patrons-scroll-track {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+/* ── Mobile: horizontal swipe carousel ── */
+@media (max-width: 600px) {
+  .patrons-section {
+    padding: 4rem 0 3rem;
+  }
+
+  .patrons-section .luxury-container {
+    overflow: hidden;
+    padding-right: 0;
+  }
+
+  .patrons-scroll-track {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 1rem;
+    padding: 0.5rem 1.25rem 1.25rem;
+    margin: 0 -1.25rem;
+  }
+
+  .patrons-scroll-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .patron-card {
+    scroll-snap-align: start;
+    min-width: 82vw;
+    max-width: 82vw;
+    flex-shrink: 0;
+  }
+
+  .patrons-scroll-hint {
+    display: flex;
+  }
+
+  .patron-event-badge {
+    display: none; /* avoid wrapping on tiny cards */
+  }
+
+  .patron-open-quote {
+    font-size: 5rem;
+  }
+}
+

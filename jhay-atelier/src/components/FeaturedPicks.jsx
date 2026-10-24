@@ -3,8 +3,8 @@ import { Sparkles, ArrowRight } from 'lucide-react';
 import ProductCard from './ProductCard';
 import { PRODUCTS } from '../data/atelierData';
 
-// Show only the first 4 products as featured picks on the landing page
-const FEATURED = PRODUCTS.slice(0, 4);
+// Show only the first 3 products as featured picks on the landing page
+const FEATURED = PRODUCTS.slice(0, 3);
 
 export default function FeaturedPicks({
   currency,
@@ -52,7 +52,7 @@ export default function FeaturedPicks({
         {/* CTA → Store */}
         <div className="featured-store-cta">
           <p className="featured-cta-text">
-            Showing <strong>4 of {PRODUCTS.length}</strong> pieces — see the complete collection in our store.
+            Showing <strong>3 of {PRODUCTS.length}</strong> pieces — see the complete collection in our store.
           </p>
           <button
             className="btn-primary gold-gradient-bg tap-scale featured-view-all-btn"

@@ -1,7 +1,6 @@
 import React from 'react';
 import Hero from '../components/Hero';
 import FeaturedPicks from '../components/FeaturedPicks';
-import AtelierCraft from '../components/AtelierCraft';
 import Footer from '../components/Footer';
 import { BRAND_INFO, TESTIMONIALS } from '../data/atelierData';
 import { MapPin, Phone, Clock, Calendar, Sparkles, Star, ArrowRight } from 'lucide-react';
@@ -38,14 +37,11 @@ export default function StorefrontPage({
         onGoToStore={onGoToStore}
       />
 
-      {/* ── 3. ATELIER CRAFT & HOW IT WORKS ─────────────────────── */}
-      <AtelierCraft onOpenBooking={onOpenBooking} />
-
-      {/* ── 4. CLIENT TESTIMONIALS ───────────────────────────────── */}
-      <section id="lookbook" className="reviews-section anim-fade-up">
+      {/* ── 3. CLIENT TESTIMONIALS ───────────────────────────────── */}
+      <section id="lookbook" className="patrons-section anim-fade-up">
         <div className="luxury-container">
 
-          <div className="section-header-block">
+          <div className="section-header-block patrons-header">
             <div className="section-eyebrow">
               <Sparkles size={12} className="sparkle-icon" />
               <span>REAL CLIENT STORIES &bull; UYO FLAGSHIP</span>
@@ -56,27 +52,50 @@ export default function StorefrontPage({
             </p>
           </div>
 
-          <div className="reviews-grid">
+          {/* Scroll carousel — horizontal swipe on mobile, 3-col on desktop */}
+          <div className="patrons-scroll-track">
             {TESTIMONIALS.map((t, index) => (
-              <div key={index} className="review-card">
-                <div className="review-stars">
+              <div key={index} className="patron-card">
+                {/* Giant open-quote decoration */}
+                <span className="patron-open-quote" aria-hidden="true">&ldquo;</span>
+
+                {/* Stars */}
+                <div className="patron-stars">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} fill="#C8A45D" color="#C8A45D" />
+                    <Star key={i} size={13} fill="#C8A45D" color="#C8A45D" />
                   ))}
                 </div>
-                <p className="review-quote">&ldquo;{t.quote}&rdquo;</p>
-                <div className="review-author-meta">
-                  <span className="author-name">{t.author}</span>
-                  <span className="author-location">
-                    <MapPin size={11} /> {t.location} &bull; {t.event}
-                  </span>
+
+                {/* Quote text */}
+                <p className="patron-quote">{t.quote}</p>
+
+                {/* Author row */}
+                <div className="patron-author-row">
+                  <div className="patron-avatar" aria-hidden="true">
+                    {t.author.charAt(0)}
+                  </div>
+                  <div className="patron-author-info">
+                    <span className="patron-author-name">{t.author}</span>
+                    <span className="patron-author-sub">
+                      <MapPin size={10} /> {t.location}
+                    </span>
+                  </div>
+                  <span className="patron-event-badge">{t.event}</span>
                 </div>
               </div>
             ))}
           </div>
 
+          {/* Mobile scroll hint dots */}
+          <div className="patrons-scroll-hint" aria-hidden="true">
+            {TESTIMONIALS.map((_, i) => (
+              <span key={i} className={`scroll-dot ${i === 0 ? 'scroll-dot--active' : ''}`} />
+            ))}
+          </div>
+
         </div>
       </section>
+
 
       {/* ── 5. UYO FLAGSHIP STUDIO INVITATION ───────────────────── */}
       <section id="contact-studio" className="studio-invitation-section anim-fade-up">
@@ -90,7 +109,7 @@ export default function StorefrontPage({
               </div>
               <h2 className="studio-title">Visit The Uyo Flagship Atelier</h2>
               <p className="studio-desc">
-                Step into our sanctuary of pure European silks, structured French corsetry, and artisanal hand-beading. Enjoy a private styling consultation and bespoke measurement fitting with our head couturier.
+                Step into our sanctuary of pure European silks, structured French corsetry, and artisanal hand-beading. Enjoy a private styling consultation and bespoke measurement fitting with our head couturier — or let us come to you with our <strong>Mobile Fitting</strong> service.
               </p>
 
               <div className="studio-details-list">
@@ -115,6 +134,7 @@ export default function StorefrontPage({
                     <span>{BRAND_INFO.contact.phone} &bull; {BRAND_INFO.contact.email}</span>
                   </div>
                 </div>
+
               </div>
 
               <div className="studio-actions-row">
