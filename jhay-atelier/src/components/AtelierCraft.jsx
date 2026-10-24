@@ -1,6 +1,6 @@
 import React from 'react';
 import { Scissors, Sparkles, CheckCircle2, MapPin } from 'lucide-react';
-import { ATELIER_PILLARS, TESTIMONIALS } from '../data/atelierData';
+import { ATELIER_PILLARS } from '../data/atelierData';
 
 export default function AtelierCraft({ onOpenBooking }) {
   return (
@@ -22,12 +22,12 @@ export default function AtelierCraft({ onOpenBooking }) {
 
         {/* Feature Split Showcase */}
         <div className="craft-showcase-grid">
-          
+
           {/* Left: Imagery of Master Atelier Hands */}
           <div className="craft-visual-wrapper anim-fade-left">
             <div className="craft-image-frame">
-              <img 
-                src="/images/atelier-craft.jpg" 
+              <img
+                src="/images/atelier-craft.jpg"
                 alt="JHAY ATELIER Dressmaking and Gold Thread Embroidery — Uyo Studio"
                 className="craft-image"
               />
@@ -72,7 +72,7 @@ export default function AtelierCraft({ onOpenBooking }) {
             </div>
 
             <div className="craft-cta-box">
-              <button 
+              <button
                 className="btn-primary gold-gradient-bg tap-scale"
                 onClick={onOpenBooking}
               >
@@ -87,28 +87,10 @@ export default function AtelierCraft({ onOpenBooking }) {
 
         </div>
 
-        {/* Editorial Press & VIP Testimonials */}
-        <div id="lookbook" className="testimonials-block">
-          <div className="testimonials-header">
-            <span className="eyebrow-gold anim-fade-up">REAL REVIEWS FROM REAL CLIENTS</span>
-            <h3 className="testimonials-title anim-fade-up stagger-1">Loved by Women for Special Moments</h3>
-          </div>
-
-          <div className="testimonials-grid">
-            {TESTIMONIALS.map((t, idx) => (
-              <div key={idx} className={`testimonial-card anim-fade-up stagger-${idx + 1}`}>
-                <div className="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p className="testimonial-quote">&ldquo;{t.quote}&rdquo;</p>
-                <div className="testimonial-meta">
-                  <strong className="testimonial-author">{t.author}</strong>
-                  <span className="testimonial-event">{t.event} &bull; {t.location}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
       </div>
     </section>
   );
 }
+
+
+

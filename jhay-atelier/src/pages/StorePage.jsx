@@ -4,15 +4,21 @@ import {
   Search,
   Grid,
   LayoutGrid,
-  SlidersHorizontal,
   X,
   ShoppingBag,
   ArrowRight,
-  Filter,
   ChevronDown
 } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import { COLLECTIONS, PRODUCTS } from '../data/atelierData';
+
+// Pre-compute count per category for tab badges
+const CATEGORY_COUNTS = COLLECTIONS.reduce((acc, cat) => {
+  acc[cat.id] = cat.id === 'all'
+    ? PRODUCTS.length
+    : PRODUCTS.filter((p) => p.category === cat.id).length;
+  return acc;
+}, {});
 
 export default function StorePage({
   currency,
@@ -115,9 +121,9 @@ export default function StorePage({
                     onClick={() => setActiveCategory(cat.id)}
                   >
                     {cat.name}
-                    {activeCategory === cat.id && (
-                      <span className="store-cat-active-dot" />
-                    )}
+                    <span className={`store-cat-count ${activeCategory === cat.id ? 'store-cat-count--active' : ''}`}>
+                      {CATEGORY_COUNTS[cat.id]}
+                    </span>
                   </button>
                 ))}
               </div>

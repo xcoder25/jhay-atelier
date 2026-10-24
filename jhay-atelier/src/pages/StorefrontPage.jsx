@@ -1,10 +1,10 @@
 import React from 'react';
 import Hero from '../components/Hero';
-import CollectionSection from '../components/CollectionSection';
+import FeaturedPicks from '../components/FeaturedPicks';
 import AtelierCraft from '../components/AtelierCraft';
 import Footer from '../components/Footer';
 import { BRAND_INFO, TESTIMONIALS } from '../data/atelierData';
-import { MapPin, Phone, Clock, Calendar, Sparkles, Star, Quote, ArrowRight } from 'lucide-react';
+import { MapPin, Phone, Clock, Calendar, Sparkles, Star, ArrowRight } from 'lucide-react';
 
 export default function StorefrontPage({
   currency,
@@ -19,7 +19,7 @@ export default function StorefrontPage({
 }) {
   return (
     <div className="storefront-page-root animate-card-fade">
-      
+
       {/* ── 1. HERO SECTION ────────────────────────────────────────── */}
       <Hero
         onOpenBooking={onOpenBooking}
@@ -27,23 +27,24 @@ export default function StorefrontPage({
         onGoToStore={onGoToStore}
       />
 
-      {/* ── 2. HAUTE COUTURE COLLECTIONS & CATALOG ─────────────────── */}
-      <CollectionSection
+      {/* ── 2. FEATURED PICKS (4 items + View All CTA) ───────────── */}
+      <FeaturedPicks
         currency={currency}
         wishlist={wishlist}
         onToggleWishlist={onToggleWishlist}
         onQuickView={onQuickView}
         onAddToCart={onAddToCart}
         onOpenBooking={onOpenBooking}
+        onGoToStore={onGoToStore}
       />
 
-      {/* ── 3. ATELIER SAVOIR-FAIRE & CRAFTSMANSHIP ─────────────────── */}
+      {/* ── 3. ATELIER CRAFT & HOW IT WORKS ─────────────────────── */}
       <AtelierCraft onOpenBooking={onOpenBooking} />
 
-      {/* ── 4. CLIENT TESTIMONIALS & REVIEWS SECTION ───────────────── */}
+      {/* ── 4. CLIENT TESTIMONIALS ───────────────────────────────── */}
       <section id="lookbook" className="reviews-section anim-fade-up">
         <div className="luxury-container">
-          
+
           <div className="section-header-block">
             <div className="section-eyebrow">
               <Sparkles size={12} className="sparkle-icon" />
@@ -77,11 +78,11 @@ export default function StorefrontPage({
         </div>
       </section>
 
-      {/* ── 5. UYO FLAGSHIP ATELIER VISIT INVITATION ────────────────── */}
+      {/* ── 5. UYO FLAGSHIP STUDIO INVITATION ───────────────────── */}
       <section id="contact-studio" className="studio-invitation-section anim-fade-up">
         <div className="luxury-container">
           <div className="studio-card gold-border">
-            
+
             <div className="studio-info-col">
               <div className="section-eyebrow">
                 <Sparkles size={12} className="sparkle-icon" />
@@ -100,7 +101,6 @@ export default function StorefrontPage({
                     <span>{BRAND_INFO.contact.address}</span>
                   </div>
                 </div>
-
                 <div className="detail-item">
                   <Clock size={18} className="gold-icon" />
                   <div>
@@ -108,7 +108,6 @@ export default function StorefrontPage({
                     <span>{BRAND_INFO.contact.hours}</span>
                   </div>
                 </div>
-
                 <div className="detail-item">
                   <Phone size={18} className="gold-icon" />
                   <div>
@@ -119,7 +118,7 @@ export default function StorefrontPage({
               </div>
 
               <div className="studio-actions-row">
-                <button 
+                <button
                   className="btn-primary gold-gradient-bg tap-scale"
                   onClick={onOpenBooking}
                 >
@@ -127,9 +126,9 @@ export default function StorefrontPage({
                   <span>Schedule Private Fitting</span>
                 </button>
 
-                <a 
+                <a
                   href={`https://wa.me/${BRAND_INFO.contact.phone.replace(/[^0-9]/g, '')}?text=Hello%20JHAY%20ATELIER%2C%20I%20would%20like%20to%20plan%20a%20visit%20to%20the%20Uyo%20atelier.`}
-                  target="_blank" 
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="btn-secondary tap-scale"
                 >
@@ -138,8 +137,6 @@ export default function StorefrontPage({
                 </a>
               </div>
             </div>
-
-
 
           </div>
         </div>
@@ -151,3 +148,5 @@ export default function StorefrontPage({
     </div>
   );
 }
+
+

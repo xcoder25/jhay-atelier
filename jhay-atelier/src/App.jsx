@@ -11,6 +11,7 @@ import BookingModal from './components/BookingModal';
 import CheckoutModal from './components/CheckoutModal';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminLoginModal from './components/admin/AdminLoginModal';
+import FloatingActions from './components/FloatingActions';
 import { PRODUCTS } from './data/atelierData';
 import {
   seedProductsIfEmpty,
@@ -347,7 +348,7 @@ function App() {
         currentView={view}
       />
 
-      <main>
+      <main className={`app-main view-transition ${view === 'store' ? 'view-store' : 'view-landing'}`}>
         {view === 'store' ? (
           <StorePage
             currency={currency}
@@ -371,6 +372,8 @@ function App() {
           />
         )}
       </main>
+
+      <FloatingActions onGoToLanding={goToLanding} />
 
       <ProductModal
         product={activeQuickViewProduct}
